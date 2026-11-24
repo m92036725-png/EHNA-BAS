@@ -1041,5 +1041,107 @@ const REN={c4:gc4,mem:gmem,rps:grps,hang:ghang,gn:ggn,tod:gtod,wyr:gwyr,who:gwho
  v.prepend(hub)}}
 })();
 </script>
+  <style>
+#cov{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#000c;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+#cov .cc{text-align:center;width:min(340px,90vw);padding:24px 16px}
+#cov h2{margin:16px 0 4px;font-size:28px}
+#cov .cav{display:inline-block;border-radius:50%;animation:cpl 1.8s ease-out infinite}
+#cov .cb{display:flex;gap:20px;justify-content:center;margin-top:30px}
+#cov .cb button{width:66px;height:66px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:26px;color:#fff}
+#cov .cb .ic{width:28px;height:28px}
+#cov .no{background:var(--danger)}#cov .no .ic{transform:rotate(135deg)}
+#cov .yes{background:#22c55e}
+@keyframes cpl{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent2) 70%,transparent)}100%{box-shadow:0 0 0 34px transparent}}
+</style>
+<script>
+(()=>{
+/* لو الاتصال بين شبكتين موبايل مش بيمسك، ضيف سيرفر TURN هنا (مثلاً من metered.ca المجاني) */
+const ICE=[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"}
+ /* ,{urls:"turn:HOST:80",username:"USER",credential:"PASS"} */];
+I.phone='<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>';
+const R=()=>SY.R,fd=s=>(s/60|0)+":"+String(s%60).padStart(2,"0");
+const aud=document.createElement("audio");aud.autoplay=true;aud.playsInline=true;document.body.append(aud);
+let pc=null,ms=null,role="",cid=0,inc=0,ans=0,t0=0,tim=0,to=0,rg=0,qi=[],iceRef=null,bound=null,stx=null;
+
+/* زرار الاتصال في الشريط العلوي */
+const cb=el("button","chip");cb.type="button";cb.title="مكالمة صوتية";cb.innerHTML=ic("phone");cb.onclick=startCall;$("#ot").before(cb);
+
+/* الشاشة */
+function view(mode,v){$("#cov")?.remove();const o=other(S.cur),d=el("div"),c=el("div","cc"),a=el("div","cav"),b=el("div","cb");d.id="cov";
+ a.append(avEl(o,112));stx=el("div","muted",mode==="in"?"بيتصل بيك...":"بيرن...");
+ const end=bt("no","phone");end.type="button";
+ if(mode==="in"){const y=bt("yes","phone");y.type="button";y.onclick=()=>accept(v);end.onclick=()=>decline();b.append(end,y)}
+ else{const m=el("button","","🎤");m.type="button";m.onclick=()=>{const t=ms&&ms.getAudioTracks()[0];if(!t)return;t.enabled=!t.enabled;m.textContent=t.enabled?"🎤":"🔇"};end.onclick=()=>down(true);b.append(m,end)}
+ c.append(a,el("h2","",U(o).name),stx,b);d.append(c);document.body.append(d)}
+const hide=()=>{$("#cov")?.remove();stx=null};
+const ui=t=>{if(stx)stx.textContent=t};
+const tick=()=>ui("متصل · "+fd((Date.now()-t0)/1000|0));
+
+/* رنة */
+function ringStart(){ringStop();const A=window.AudioContext||window.webkitAudioContext;let x;try{x=new A()}catch(e){}
+ const b=()=>{navigator.vibrate&&navigator.vibrate([400,200,400]);if(!x)return;[0,.25].forEach(k=>{const o=x.createOscillator(),g=x.createGain();o.frequency.value=k?660:520;g.gain.value=.08;o.connect(g);g.connect(x.destination);o.start(x.currentTime+k);o.stop(x.currentTime+k+.2)})};
+ b();rg=setInterval(b,2200)}
+const ringStop=()=>{clearInterval(rg);rg=0};
+
+/* الاتصال */
+const AUD={audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}};
+function newPc(id){const p=new RTCPeerConnection({iceServers:ICE});
+ p.onicecandidate=e=>{if(e.candidate&&R())R().child("cice/"+id+"/"+S.cur).push(JSON.stringify(e.candidate))};
+ p.ontrack=e=>{aud.srcObject=e.streams[0];aud.play().catch(()=>{})};
+ p.onconnectionstatechange=()=>{const s=p.connectionState;
+  if(s==="connected"&&!t0){t0=Date.now();clearTimeout(to);tim=setInterval(tick,1000);tick()}
+  else if(s==="failed"){toast("الاتصال فشل — جرّب شبكة تانية");down(true)}
+  else if(s==="disconnected")setTimeout(()=>{if(pc===p&&p.connectionState==="disconnected")down(true)},8000)};
+ return p}
+const addC=c=>pc&&pc.remoteDescription?pc.addIceCandidate(c).catch(()=>{}):qi.push(c);
+function listenIce(id){iceRef=R().child("cice/"+id+"/"+other(S.cur));iceRef.on("child_added",s=>{try{addC(JSON.parse(s.val()))}catch(e){}})}
+
+async function startCall(){
+ if(role)return;
+ if(!R()||!SY.conn)return toast("المزامنة مش شغّالة — شغّلها من الإعدادات");
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)return toast("المكالمة محتاجة موقع HTTPS");
+ try{ms=await navigator.mediaDevices.getUserMedia(AUD)}catch(e){return toast("اسمح بالمايك للصفحة")}
+ role="out";cid=Date.now();ans=0;const id=cid;view("out");
+ pc=newPc(id);ms.getTracks().forEach(t=>pc.addTrack(t,ms));
+ try{await pc.setLocalDescription(await pc.createOffer());
+  await R().child("call").set({id,by:S.cur,st:"ring",offer:JSON.stringify(pc.localDescription),t:firebase.database.ServerValue.TIMESTAMP})}
+ catch(e){toast("مقدرتش أبدأ المكالمة");return down(false)}
+ listenIce(id);to=setTimeout(()=>{if(role==="out"&&!t0)down(true)},40000)}
+
+async function accept(v){
+ try{ms=await navigator.mediaDevices.getUserMedia(AUD)}catch(e){toast("اسمح بالمايك للصفحة");return decline()}
+ ringStop();role="in";cid=v.id;ans=0;view("call");ui("بيتوصّل...");
+ try{pc=newPc(v.id);ms.getTracks().forEach(t=>pc.addTrack(t,ms));
+  await pc.setRemoteDescription(JSON.parse(v.offer));qi.splice(0).forEach(addC);
+  await pc.setLocalDescription(await pc.createAnswer());listenIce(v.id);
+  await R().child("call").update({answer:JSON.stringify(pc.localDescription),st:"on"})}
+ catch(e){toast("المكالمة فشلت");down(true)}}
+
+function decline(){ringStop();hide();if(R())R().child("call/st").set("end").catch(()=>{});if(ms){ms.getTracks().forEach(t=>t.stop());ms=null}}
+
+function down(send){const was=role,id=cid,dur=t0?(Date.now()-t0)/1000|0:0;
+ clearInterval(tim);clearTimeout(to);ringStop();
+ if(iceRef){iceRef.off();iceRef=null}
+ if(pc){pc.onconnectionstatechange=null;pc.close();pc=null}
+ if(ms){ms.getTracks().forEach(t=>t.stop());ms=null}
+ aud.srcObject=null;role="";cid=0;t0=0;qi=[];ans=0;hide();
+ if(!was)return;
+ if(send&&R())R().child("call/st").set("end").catch(()=>{});
+ if(was==="out"){S.msgs.push({u:S.cur,text:dur?"📞 مكالمة صوتية · "+fd(dur):"📞 مكالمة فائتة",t:Date.now()});save();if(curV==="chat")rChat();
+  setTimeout(()=>{if(R())R().child("cice/"+id).remove().catch(()=>{})},3000)}}
+
+function onCall(v){if(!v)return;
+ if(v.by!==S.cur){
+  if(v.st==="ring"){if(role||inc===v.id||srvNow()-v.t>45e3)return;inc=v.id;ringStart();view("in",v)}
+  else if(v.st==="end"&&(inc===v.id||cid===v.id)){if(role)down(false);else{ringStop();hide()}}}
+ else if(role==="out"&&v.id===cid){
+  if(v.answer&&!ans&&pc){ans=1;ui("بيتوصّل...");pc.setRemoteDescription(JSON.parse(v.answer)).then(()=>qi.splice(0).forEach(addC)).catch(()=>{})}
+  if(v.st==="end")down(false)}}
+
+/* اربط الاستماع كل ما المزامنة تتشغّل أو تتغيّر */
+setInterval(()=>{const r=R();if(r===bound)return;if(bound){try{bound.child("call").off()}catch(e){}}bound=r;if(r)r.child("call").on("value",s=>onCall(s.val()))},1500);
+addEventListener("pagehide",()=>{if(role&&R())R().child("call/st").set("end")});
+})();
+</script>
 </body>
 </html>
