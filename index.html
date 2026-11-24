@@ -1143,5 +1143,103 @@ setInterval(()=>{const r=R();if(r===bound)return;if(bound){try{bound.child("call
 addEventListener("pagehide",()=>{if(role&&R())R().child("call/st").set("end")});
 })();
 </script>
+  <style>
+.msg .rxs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.rxc{font-size:14px;padding:1px 8px;border-radius:99px;background:color-mix(in srgb,var(--text) 14%,transparent);border:1px solid var(--stroke)}
+.rxc.me{border-color:var(--accent2)}.msg.mine .rxc{background:#0003;border-color:#fff4}
+#rxo{position:fixed;inset:0;z-index:70}
+.rxp{position:fixed;display:flex;gap:2px;padding:6px 8px;border-radius:999px;background:var(--glass);border:1px solid var(--stroke);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);box-shadow:0 14px 34px -10px #000a;animation:rxin .22s var(--spring)}
+.rxp button{font-size:26px;padding:4px 6px;background:none}.rxp .on{background:color-mix(in srgb,var(--accent2) 35%,transparent)}
+@keyframes rxin{from{transform:scale(.6);opacity:0}}
+.dcv{display:block;width:min(100%,420px);aspect-ratio:3/4;margin:8px auto;border-radius:22px;background:#15111a;border:1px solid var(--stroke);touch-action:none;cursor:crosshair}
+.dsw{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid var(--stroke)}
+.dsw.on,.dtb button.on{outline:3px solid var(--accent2);outline-offset:2px}
+</style>
+<script>
+(()=>{
+/* ===== PWA: الروابط والـ Service Worker ===== */
+[["manifest","manifest.webmanifest"],["apple-touch-icon","apple-touch-icon.png"],["icon","favicon-32.png"]].forEach(([r,h])=>{const l=document.createElement("link");l.rel=r;l.href=h;document.head.append(l)});
+[["theme-color","#0e0709"],["apple-mobile-web-app-capable","yes"],["mobile-web-app-capable","yes"],["apple-mobile-web-app-title","إحنا بس"],["apple-mobile-web-app-status-bar-style","black-translucent"]].forEach(([n,c])=>{const m=document.createElement("meta");m.name=n;m.content=c;document.head.append(m)});
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+let ip=null;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();ip=e;if(curV==="install")rInstall()});
+addEventListener("appinstalled",()=>{ip=null;if(curV==="install")rInstall();toast("اتثبّت ✅")});
+
+/* ===== خانة تحميل ===== */
+I.dl='<path d="M12 3v12M7 11l5 5 5-5M4 20h16"/>';VL.install="التحميل";
+{const nb=el("button","sec");nb.type="button";nb.dataset.v="install";nb.innerHTML="<span>"+ic("dl")+"</span><small>تحميل</small>";nb.onclick=()=>go("install");SEC.push("install");$("#nav .more").before(nb);
+ const s=el("section","view hidden");s.id="v-install";$("main").append(s)}
+{const _g=go;go=function(v){_g(v);if(v==="install")rInstall()}}
+function rInstall(){const v=$("#v-install");v.replaceChildren();
+ const sa=matchMedia("(display-mode: standalone)").matches||navigator.standalone,ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+ const c=el("div","card"),top=el("div","row"),im=el("img"),t=el("div");im.src="icon-192.png";im.style.cssText="width:72px;height:72px;border-radius:18px";
+ t.append(el("h3","","إحنا بس"),el("div","small muted",sa?"متثبّت عندك ✅":"ثبّته على الشاشة الرئيسية وافتحه زي أي تطبيق"));top.append(im,t);c.append(top);
+ if(!sa){
+  if(ip){const b=el("button","primary","ثبّت التطبيق");b.style.cssText="width:100%;margin-top:12px";b.onclick=async()=>{ip.prompt();await ip.userChoice;ip=null;rInstall()};c.append(b)}
+  else if(ios){const ol=el("ol");ol.style.cssText="margin:12px 0 0;padding-inline-start:22px;line-height:2";["افتح الموقع من Safari","دوس على زرار المشاركة (المربع والسهم)","اختار «إضافة إلى الشاشة الرئيسية»","دوس «إضافة»"].forEach(x=>ol.append(el("li","small",x)));c.append(ol)}
+  else{const h=el("div","small muted","من قايمة المتصفح (⋮) اختار «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».");h.style.marginTop="12px";c.append(h)}}
+ v.append(c);
+ const u=el("div","card"),ub=el("button","","حدّث التطبيق");u.append(hd("sync","التحديثات"),el("div","small muted","لو عدّلت الموقع ومظهرش التحديث، دوس هنا."));ub.style.marginTop="10px";
+ ub.onclick=()=>{const f=()=>location.reload();if(!window.caches)return f();caches.keys().then(k=>Promise.all(k.map(x=>caches.delete(x)))).then(()=>navigator.serviceWorker&&navigator.serviceWorker.getRegistrations()).then(r=>Promise.all((r||[]).map(x=>x.unregister()))).then(f,f)};
+ u.append(ub);v.append(u)}
+
+/* ===== ريأكشن بالضغطة المطوّلة ===== */
+const RX=["❤️","😂","😮","😢","👍","🔥"];
+function rxSet(m,e,b){const y=b.scrollTop;m.rx=m.rx||{};if(m.rx[S.cur]===e)delete m.rx[S.cur];else m.rx[S.cur]=e;if(!Object.keys(m.rx).length)delete m.rx;save();b.id==="messages"?rChat():rWatch();b.scrollTop=y}
+function rxPick(d,m,b){$("#rxo")?.remove();const o=el("div"),p=el("div","rxp"),r=d.getBoundingClientRect();o.id="rxo";
+ RX.forEach(e=>{const x=el("button",m.rx&&m.rx[S.cur]===e?"on":"",e);x.type="button";x.onclick=ev=>{ev.stopPropagation();o.remove();rxSet(m,e,b)};p.append(x)});
+ o.onclick=()=>o.remove();o.append(p);document.body.append(o);
+ const w=p.offsetWidth,h=p.offsetHeight;p.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+"px";
+ p.style.top=(r.top>h+70?r.top-h-8:Math.min(innerHeight-h-8,r.bottom+8))+"px";navigator.vibrate&&navigator.vibrate(12)}
+function rxDecor(d,m,b){
+ if(m.rx){const g={},w=el("div","rxs");Object.entries(m.rx).forEach(([u,e])=>(g[e]=g[e]||[]).push(u));
+  Object.entries(g).forEach(([e,us])=>{const c=el("button","rxc"+(us.includes(S.cur)?" me":""),e+(us.length>1?" "+us.length:""));c.type="button";c.onclick=ev=>{ev.stopPropagation();rxSet(m,e,b)};w.append(c)});d.append(w)}
+ let tm=0,sx=0,sy=0;
+ d.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;clearTimeout(tm);tm=setTimeout(()=>rxPick(d,m,b),450)},{passive:true});
+ d.addEventListener("touchmove",e=>{const t=e.touches[0];if(Math.abs(t.clientX-sx)>8||Math.abs(t.clientY-sy)>8)clearTimeout(tm)},{passive:true});
+ ["touchend","touchcancel"].forEach(k=>d.addEventListener(k,()=>clearTimeout(tm)));
+ d.addEventListener("contextmenu",e=>{e.preventDefault();if(!$("#rxo"))rxPick(d,m,b)})}
+{const _r=renderMsgs;renderMsgs=function(b,list){_r(b,list);b.querySelectorAll(".msg").forEach((d,i)=>{if(list[i])rxDecor(d,list[i],b)});b.scrollTop=b.scrollHeight}}
+
+/* ===== لوحة رسم مشتركة (جوه الألعاب) ===== */
+const COL=["#ff4d6d","#ff9f1c","#ffd93d","#3ddc84","#38bdf8","#a78bfa","#ffffff","#8d8d99"];
+const D={s:new Map(),cv:null,cx:null,col:"#ff4d6d",w:9,er:0,cur:null,open:0,q:null,ref:null};
+const R=()=>SY.R;let rq=0;
+function seg(s,i){const cx=D.cx;if(!cx)return;const a=s.p[i],b=s.p[i+1]||a;cx.save();cx.lineCap=cx.lineJoin="round";cx.lineWidth=s.w;cx.strokeStyle=s.c;cx.globalCompositeOperation=s.e?"destination-out":"source-over";
+ cx.beginPath();cx.moveTo(a[0]*600,a[1]*800);cx.lineTo(b[0]*600+(a===b?.01:0),b[1]*800);cx.stroke();cx.restore()}
+function paint(){const cx=D.cx;if(!cx)return;cx.clearRect(0,0,600,800);[...D.s].sort((a,b)=>a[0]<b[0]?-1:1).forEach(([k,s])=>{for(let i=0;i<Math.max(1,s.p.length-1);i++)seg(s,i)})}
+const req=()=>{if(rq)return;rq=requestAnimationFrame(()=>{rq=0;paint()})};
+function setS(k,val){let s;try{s=JSON.parse(val)}catch(e){return}if(D.cur&&D.cur.id===k)return;if(s.u===S.cur&&D.s.has(k))return;D.s.set(k,s);req()}
+setInterval(()=>{const r=R();if(r===D.ref)return;if(D.q){try{D.q.off()}catch(e){}}D.ref=r;D.q=null;if(!r)return;const q=D.q=r.child("draw/s");
+ q.on("child_added",s=>setS(s.key,s.val()));q.on("child_changed",s=>setS(s.key,s.val()));q.on("child_removed",s=>{D.s.delete(s.key);req()})},1500);
+const fl=()=>{const k=D.cur;if(k&&R())R().child("draw/s/"+k.id).set(JSON.stringify(k.s)).catch(()=>{})};
+function drawCard(){const c=el("div","card"),cv=el("canvas"),tb=el("div","row dtb"),tb2=el("div","row dtb"),er=bt("","palette");
+ c.append(hd("palette","لوحة الرسم المشتركة"),el("div","small muted","اللي بترسمه بيظهر عند التاني لحظيًا"));
+ cv.width=600;cv.height=800;cv.className="dcv";D.cv=cv;D.cx=cv.getContext("2d");tb.style.marginTop="8px";
+ const upd=()=>{c.querySelectorAll("[data-c]").forEach(b=>b.classList.toggle("on",!D.er&&b.dataset.c===D.col));c.querySelectorAll("[data-w]").forEach(b=>b.classList.toggle("on",+b.dataset.w===D.w));er.classList.toggle("on",!!D.er)};
+ COL.forEach(k=>{const b=el("button","dsw");b.type="button";b.dataset.c=k;b.style.background=k;b.onclick=()=>{D.col=k;D.er=0;upd()};tb.append(b)});
+ [[4,"•"],[9,"●"],[18,"⬤"]].forEach(([w,t])=>{const b=el("button","",t);b.type="button";b.dataset.w=w;b.onclick=()=>{D.w=w;upd()};tb2.append(b)});
+ er.innerHTML="🧽";er.onclick=()=>{D.er=D.er?0:1;upd()};
+ const un=el("button","","↩"),cl=el("button","","🗑"),sv=el("button","","💾");[un,cl,sv].forEach(b=>b.type="button");
+ un.onclick=()=>{const m=[...D.s].filter(([k,s])=>s.u===S.cur).sort((a,b)=>a[0]<b[0]?-1:1).pop();if(!m)return;D.s.delete(m[0]);if(R())R().child("draw/s/"+m[0]).remove();paint()};
+ cl.onclick=()=>ov((p,x)=>{const r=el("div","row"),y=el("button","primary","امسح الكل"),n=el("button","ghost","إلغاء");r.style.marginTop="12px";y.style.flex=n.style.flex="1";
+  y.onclick=()=>{D.s.clear();paint();if(R())R().child("draw/s").remove();x()};n.onclick=x;r.append(y,n);p.append(el("h3","","تمسح اللوحة للاتنين؟"),r)});
+ sv.onclick=()=>{const t=document.createElement("canvas");t.width=600;t.height=800;const x=t.getContext("2d");x.fillStyle="#15111a";x.fillRect(0,0,600,800);x.drawImage(cv,0,0);
+  t.toBlob(bl=>{const a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download="rasm-ehna.png";a.click()})};
+ tb2.append(er,un,cl,sv);
+ const pt=e=>{const r=cv.getBoundingClientRect();return[Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))]};
+ cv.onpointerdown=e=>{e.preventDefault();cv.setPointerCapture(e.pointerId);const id=R()?R().child("draw/s").push().key:"l"+Date.now(),s={u:S.cur,c:D.col,w:D.er?D.w*2.2:D.w,e:D.er,p:[pt(e)]};
+  D.cur={id,s,t:0};D.s.set(id,s);seg(s,0);fl()};
+ cv.onpointermove=e=>{const k=D.cur;if(!k)return;const q=pt(e),l=k.s.p[k.s.p.length-1];if(Math.hypot((q[0]-l[0])*600,(q[1]-l[1])*800)<3)return;
+  k.s.p.push(q);seg(k.s,k.s.p.length-2);if(Date.now()-k.t>180){k.t=Date.now();fl()}};
+ cv.onpointerup=cv.onpointercancel=()=>{if(D.cur){fl();D.cur=null}};
+ c.append(tb,tb2,cv);upd();paint();return c}
+{const _g=rGames;rGames=function(){const v=$("#v-games"),f0=v.firstElementChild;_g();if(f0&&v.firstElementChild===f0)return;
+ const g=v.querySelector(".mg");if(!g)return;const hub=g.closest(".card"),b=el("button",D.open?"primary drawb":"drawb");b.type="button";b.innerHTML='<span style="font-size:26px">🎨</span>لوحة رسم';
+ [...g.children].forEach(x=>x.addEventListener("click",()=>{D.open=false},true));g.append(b);
+ b.onclick=()=>{const s=g.querySelector("button.primary:not(.drawb)");if(s)s.click();D.open=!D.open;rGames()};
+ if(D.open)hub.after(drawCard())}}
+})();
+</script>
 </body>
 </html>
