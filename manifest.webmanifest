@@ -1,0 +1,18 @@
+{
+  "name": "إحنا بس",
+  "short_name": "إحنا بس",
+  "description": "المكان بتاعنا احنا الاتنين بس",
+  "lang": "ar",
+  "dir": "rtl",
+  "id": "./ehna_v2.html",
+  "start_url": "./ehna_v2.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e0709",
+  "theme_color": "#0e0709",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
