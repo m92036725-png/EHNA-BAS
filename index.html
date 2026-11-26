@@ -1602,5 +1602,43 @@ var tries=0,iv=setInterval(function(){var a=initSettings(),b=initWatch();if((a&&
 initSettings();initWatch();
 })();
 </script>
+  <script>
+(()=>{
+/* 1) إصلاح wPush: يقبل v فاضية */
+wPush=function(playing,v){if(!SY.R)return;const p=W.p,pos=p&&W.ready&&p.getCurrentTime?p.getCurrentTime():0,vv=v===undefined?S.wv:v,
+ o={v:vv,playing:!!playing,pos:Math.round(pos*10)/10,ts:firebase.database.ServerValue.TIMESTAMP,by:S.cur};
+ W.st={v:vv,playing:o.playing,pos:o.pos,ts:srvNow(),by:S.cur};W.last=Date.now();SY.R.child("watch").set(o).catch(()=>{})};
+
+let remote=false,lastWx="",bound=null;
+const stg=()=>document.getElementById("stage");
+function killLocal(){const s=stg();if(!s)return;s.querySelectorAll(".xx-p").forEach(n=>{try{n.pause&&n.pause()}catch(e){}n.removeAttribute("src");n.remove()});
+ s.style.aspectRatio="";s.style.height="";s.style.maxHeight=""}
+function stopAll(){killLocal();
+ const e=document.getElementById("w-empty");if(e){e.classList.remove("hidden");e.style.display=""}
+ S.wv="";localSave();W.v="";W.p=null;W.ready=false;lastWx="";
+ const s=stg();s&&s.querySelectorAll("iframe,#yt,video").forEach(n=>n.remove());
+ if(SY.R){wPush(false,"");SY.R.child("wx").set({u:"",by:S.cur,ts:firebase.database.ServerValue.TIMESTAMP}).catch(()=>{})}
+ if(typeof rWatch==="function")rWatch()}
+function playUrl(u){const i=document.getElementById("xx-wu"),b=document.getElementById("xx-wp");if(!i||!b)return;i.value=u;remote=true;b.click();remote=false}
+
+/* 2) ربط الأزرار (بعد ما الكارت يتعمل) */
+const iv=setInterval(()=>{const st=document.getElementById("xx-ws"),pl=document.getElementById("xx-wp"),inp=document.getElementById("xx-wu");
+ if(!st||!pl||!inp)return;clearInterval(iv);
+ st.onclick=()=>{stopAll();const m=document.getElementById("xx-wm");if(m)m.textContent="اتوقف للاتنين."};
+ pl.addEventListener("click",()=>{if(remote||!inp.value.trim())return;lastWx=inp.value.trim();
+  if(SY.R)SY.R.child("wx").set({u:lastWx,by:S.cur,ts:firebase.database.ServerValue.TIMESTAMP}).catch(()=>{})})},300);
+
+/* 3) استقبال تشغيل/إيقاف اللينك من الطرف التاني */
+setInterval(()=>{const r=SY.R;if(r===bound)return;if(bound){try{bound.child("wx").off()}catch(e){}}bound=r;
+ if(r)r.child("wx").on("value",s=>{const v=s.val();if(!v||v.by===S.cur)return;
+  if(!v.u){lastWx="";killLocal();const e=document.getElementById("w-empty");if(e)e.style.display=""}
+  else{lastWx=v.u;if(curV==="watch")playUrl(v.u)}})},1500);
+
+/* 4) اقفل الصوت لما تطلع من تبويب الفرجة */
+const _g=go;go=function(v){const was=curV;_g(v);
+ if(was==="watch"&&v!=="watch")killLocal();
+ if(v==="watch"&&was!=="watch"&&lastWx)playUrl(lastWx)};
+})();
+</script>
 </body>
 </html>
