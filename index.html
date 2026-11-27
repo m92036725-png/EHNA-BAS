@@ -2130,5 +2130,120 @@ setInterval(()=>{if(curV==="pray"){const s=JSON.stringify(S.prays);if(s!==ps){ps
  if(curV==="notes"&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)&&!$(".lb")){const s=S.notes.length+":"+S.once.map(z=>(z.seen?1:0)+""+(z.img?1:0)).join("");if(s!==nsg){nsg=s;rNotes()}}},1500);
 })();
 </script>
+  
+<script>
+(()=>{
+if(window.__ad2fix)return;window.__ad2fix=1;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const css=document.createElement("style");css.id="ad2-fix-css";css.textContent=`
+/* ===== سينما ===== */
+#v-watch{position:relative;isolation:isolate;--bg:#070405;--bg2:#140a0d;--bg3:#2a1017;--text:#f3e9ec;--muted:#a08a91;--accent:#9b1f40;--accent2:#d13a67;--glass:rgba(30,12,18,.6);--stroke:#ffffff1f;color:var(--text);color-scheme:dark;
+ background:radial-gradient(75% 28% at 50% 0,#4a0c1acc,transparent),#070405}
+#v-watch::before,#v-watch::after{content:"";position:absolute;top:0;bottom:0;width:18px;z-index:-1;pointer-events:none;
+ background:repeating-linear-gradient(90deg,#3a0714 0 4px,#7a1630 4px 9px,#4d0b1c 9px 14px)}
+#v-watch::before{left:0;box-shadow:inset -10px 0 16px #000b}
+#v-watch::after{right:0;box-shadow:inset 10px 0 16px #000b}
+.cin-val{height:26px;margin:0 0 22px;position:relative;background:linear-gradient(180deg,#4d0b1c,#8a1a38);border-bottom:3px solid #c9972b;box-shadow:0 8px 22px -6px #000}
+.cin-val::after{content:"";position:absolute;left:0;right:0;top:100%;margin-top:3px;height:14px;background:radial-gradient(circle at 14px 0,#7d1a33 13px,transparent 14px) 0 0/28px 14px repeat-x;filter:drop-shadow(0 3px 3px #000a)}
+#v-watch #stage{border:2px solid #1b0c10;border-radius:3px;background:#000;
+ box-shadow:0 0 0 5px #0b0406,0 0 0 7px #4a3716,0 0 90px -6px rgba(255,222,175,.38),0 40px 60px -30px rgba(255,200,150,.35)}
+
+.cin-hall{position:relative;margin:34px 6px 0;padding:22px 6px 12px;border-radius:16px 16px 0 0;overflow:hidden;
+ background:repeating-linear-gradient(45deg,#ffffff06 0 5px,transparent 5px 10px),linear-gradient(180deg,#0b0507,#170a0f 55%,#240f16)}
+.cin-hall::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;mix-blend-mode:screen;
+ background:linear-gradient(180deg,rgba(255,232,200,.20),rgba(255,232,200,.04) 60%,transparent);animation:scr 4.3s infinite}
+@keyframes scr{0%,100%{opacity:1}12%{opacity:.78}25%{opacity:.95}41%{opacity:.7}60%{opacity:1}83%{opacity:.85}}
+.cb{position:absolute;left:50%;bottom:-8px;width:150%;height:125%;transform:translateX(-50%);z-index:2;pointer-events:none;
+ clip-path:polygon(47.5% 100%,52.5% 100%,100% 0,0 0);background:linear-gradient(0deg,rgba(255,236,205,.20),rgba(255,236,205,.015));animation:scr 3.7s infinite}
+.cb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,#fff8 1px,transparent 1.6px) 0 0/23px 29px;opacity:.35;animation:dst 9s linear infinite}
+@keyframes dst{to{background-position:14px -120px}}
+.cx{position:absolute;top:8px;right:10px;z-index:4;font:700 9px/1 sans-serif;letter-spacing:1px;color:#8dffae;background:#0a2a14;border:1px solid #1d6b36;padding:3px 6px;border-radius:3px;box-shadow:0 0 12px #3dff7a88}
+.cr{display:flex;justify-content:center;gap:2.4%;position:relative;z-index:1;margin-top:-2px;padding-bottom:7px;border-bottom:2px solid rgba(255,170,60,.07)}
+.cr.r1{opacity:.45;margin-top:0}.cr.r1 .st{width:10.4%}
+.cr.r2{opacity:.68;margin-top:4px}.cr.r2 .st{width:12.4%}
+.cr.mr{margin-top:12px;padding-bottom:12px;gap:3%;border:0}.cr.mr .st{width:21%}
+.st{position:relative;flex:none}
+.st svg{display:block;width:100%;height:auto;position:relative;z-index:1;filter:drop-shadow(0 6px 5px #000b)}
+.st .hd{position:absolute;left:50%;top:-24px;transform:translateX(-50%);z-index:0;display:none}
+.st.occ .hd{display:block;animation:sin .4s var(--spring,ease)}@keyframes sin{from{transform:translateX(-50%) scale(.3);opacity:0}}
+.st.occ svg{filter:drop-shadow(0 6px 5px #000b) brightness(1.15)}
+.st.dim{opacity:.5}
+.st small{display:block;text-align:center;font-size:11px;color:var(--muted);margin-top:3px;position:relative;z-index:1;white-space:nowrap}
+.st.dec .hd{left:0;right:0;top:-16%;transform:none;display:block}
+.sil{display:block;width:42%;aspect-ratio:1;border-radius:50%;margin:0 auto;background:#1c0e13;box-shadow:0 0 0 2px #0006}
+
+
+`;document.head.append(css);
+
+const CHT=x=>x==="a"||x==="y";
+function here(x){try{if(x===S.cur)return curV==="watch"&&!document.hidden;const p=PL[x];return on(x)&&p&&p.v==="watch"&&!p.h}catch(e){return false}}
+let meRow=null,fixHall=null,sk="";
+
+function build(){
+ const stg=$("#stage");if(!stg)return;
+ $$(".cin-val").slice(1).forEach(e=>e.remove());
+ $$(".cin-hall").slice(1).forEach(e=>e.remove());
+ if(!$(".cin-val")){const v=document.createElement("div");v.className="cin-val";stg.before(v)}
+ let hall=$(".cin-hall");
+ if(!hall){
+const seatSVG='<svg viewBox="0 0 80 92"><use href="#cs"/></svg>';
+const hall=el("div","cin-hall");
+hall.innerHTML=
+ '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>'
+ +'<linearGradient id="cs-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c2294f"/><stop offset=".45" stop-color="#8a1733"/><stop offset="1" stop-color="#4d0b1c"/></linearGradient>'
+ +'<linearGradient id="cs-a" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a0c1a"/><stop offset=".5" stop-color="#2a0710"/><stop offset="1" stop-color="#4a0c1a"/></linearGradient>'
+ +'<linearGradient id="cs-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b1228"/><stop offset="1" stop-color="#2d0710"/></linearGradient>'
+ +'<g id="cs">'
+ +'<rect x="35" y="80" width="10" height="12" rx="2" fill="#140508"/><rect x="26" y="88" width="28" height="4" rx="2" fill="#0d0305"/>'
+ +'<rect x="2" y="42" width="14" height="40" rx="6" fill="url(#cs-a)"/><rect x="64" y="42" width="14" height="40" rx="6" fill="url(#cs-a)"/>'
+ +'<rect x="3" y="42" width="12" height="4" rx="2" fill="#ffffff22"/><rect x="65" y="42" width="12" height="4" rx="2" fill="#ffffff22"/>'
+ +'<path d="M11 28Q11 4 40 4Q69 4 69 28L69 66Q69 76 59 76H21Q11 76 11 66Z" fill="url(#cs-b)"/>'
+ +'<path d="M19 26Q19 11 40 11Q61 11 61 26" fill="none" stroke="#ffffff30" stroke-width="2.2" stroke-linecap="round"/>'
+ +'<path d="M40 14V72" stroke="#0006" stroke-width="1.6"/><path d="M21 40H59M21 56H59" stroke="#0004" stroke-width="1.2"/>'
+ +'<rect x="13" y="68" width="54" height="15" rx="7" fill="url(#cs-c)"/><rect x="16" y="69" width="48" height="3" rx="1.5" fill="#ffffff1c"/>'
+ +'</g></defs></svg>'
+ +'<div class="cb"></div><div class="cx">EXIT</div>';
+const mkRow=(cls,n,occ)=>{const r=el("div","cr "+cls);for(let i=0;i<n;i++){const s=el("div","st"+(occ.includes(i)?" dec":""));s.innerHTML=(occ.includes(i)?'<div class="hd"><i class="sil"></i></div>':"")+seatSVG;r.append(s)}return r};
+const meRow=el("div","cr mr");
+hall.append(mkRow("r1",7,[1,4,5]),mkRow("r2",7,[0,3,6]),meRow);
+
+  hall.dataset.fix="1";stg.after(hall);
+ }
+ fixHall=hall.dataset.fix?hall:null;meRow=fixHall&&hall.querySelector(".mr");
+}
+
+function seats(){
+ if(!fixHall||!meRow||!meRow.isConnected)return;
+ const k=S.cur+["a","y"].map(x=>here(x)?1:0).join("");if(k===sk)return;sk=k;
+ meRow.replaceChildren();
+ ["x","a","y","z"].forEach(x=>{const pl=CHT(x),oc=pl&&here(x),s=el("div","st"+(pl?"":" dim")+(oc?" occ":""));
+  s.innerHTML='<div class="hd"></div>'+seatSVG;
+  if(oc)s.querySelector(".hd").append(avEl(x,48));
+  if(pl)s.append(el("small","",oc?U(x).name:"كرسي فاضي"));
+  meRow.append(s)})}
+
+function clean(){
+ try{
+  /* شيل كلمة سينما إحنا والكراسي القديمة */
+  $$(".cin-top,.cin-seats").forEach(e=>e.remove());
+  $$("#v-watch *").forEach(e=>{if(!e.children.length&&/سينما إحنا/.test(e.textContent||""))e.remove()});
+  /* شيل أقسام الصلاة والمذكرة المكررة (سيب الأولى) */
+  ["v-pray","v-notes"].forEach(id=>$$('[id="'+id+'"]').slice(1).forEach(e=>e.remove()));
+  /* شيل أزرار الصلاة والمذكرة المكررة في نفس المكان */
+  const seen=new Map();
+  $$("button,[data-v]").forEach(b=>{
+   const v=b.dataset&&b.dataset.v,t=(b.textContent||"").trim();
+   const k=(v==="pray"||v==="notes")?v:(t==="الصلاة"?"pray":t==="مذكرة"?"notes":null);
+   if(!k||!b.parentElement)return;
+   let st=seen.get(b.parentElement);if(!st){st=new Set();seen.set(b.parentElement,st)}
+   if(st.has(k))b.remove();else st.add(k)});
+  build();seats();
+ }catch(e){}
+}
+clean();
+setInterval(clean,700);
+let tm;new MutationObserver(()=>{clearTimeout(tm);tm=setTimeout(clean,80)}).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
