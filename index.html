@@ -2245,5 +2245,22 @@ setInterval(clean,700);
 let tm;new MutationObserver(()=>{clearTimeout(tm);tm=setTimeout(clean,80)}).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
+  <script>
+/* إصلاح تكرار المشاعر — الصق الملف ده قبل </body> وبعد آخر <script> */
+(()=>{
+ function dedupeMoods(){
+  const seen=new Set();
+  for(let i=0;i<MOODS.length;i++){
+   const k=MOODS[i][0]+"|"+MOODS[i][1];
+   if(seen.has(k)){MOODS.splice(i,1);i--}
+   else seen.add(k);
+  }
+ }
+ dedupeMoods();
+ /* حماية: لو أي سكريبت ضاف مشاعر تاني بعد كده، نشيل التكرار قبل ما الشاشة تترسم */
+ const _rMood=rMood;
+ rMood=function(v,u,o){dedupeMoods();return _rMood(v,u,o)};
+})();
+</script>
 </body>
 </html>
