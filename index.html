@@ -2866,5 +2866,526 @@ setInterval(badge,800);badge();
 document.addEventListener("visibilitychange",badge);
 })();
 </script>
+ <style id="isl3-css">
+/* ===== نوافذ التنبيه الإضافية ===== */
+#ex-pop{position:fixed;inset:0;z-index:85;display:grid;place-items:center;background:#000b;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:vin .3s ease-out}
+#ex-pop .pc{width:min(360px,92vw);text-align:center;padding:26px 18px;border-radius:30px;background:linear-gradient(160deg,var(--bg2),var(--g2));border:1px solid var(--stroke);box-shadow:0 30px 70px -20px #000;color:var(--text)}
+#ex-pop .pm{font-size:64px;animation:hb 2.6s ease-in-out infinite}
+#ex-pop .pt{font-size:25px;font-weight:800;margin:8px 0 2px;font-family:"Aref Ruqaa","Tajawal",serif}
+#ex-pop .pa{margin:14px 6px;font-size:15px;line-height:1.9;color:var(--muted)}
+#ex-pop .pb{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.i3c{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.i3c button{font-size:13.5px;padding:7px 13px}
+.i3c button.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700}
+.i3r{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--bg3)}.i3r:last-child{border:0}
+.shv{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.shav{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:24px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2)) center/cover;box-shadow:0 0 0 2px var(--stroke)}
+.shv.sel .shav{box-shadow:0 0 0 3px var(--accent2),0 8px 18px -6px var(--accent2)}
+
+/* ===== وحشتيني ===== */
+#miss-ov{position:fixed;inset:0;z-index:88;display:grid;place-items:center;text-align:center;overflow:hidden;background:radial-gradient(70% 60% at 50% 50%,#ff2d6faa,#12030acc 75%);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:vin .35s ease-out}
+#miss-ov .mw{font-family:"Aref Ruqaa","Tajawal",serif;font-size:62px;font-weight:700;color:#fff;text-shadow:0 0 30px #ff4d88;animation:hb 1.6s ease-in-out infinite}
+#miss-ov .mn{font-size:20px;color:#ffd6e4;margin-bottom:6px}
+#miss-ov .mh{position:absolute;bottom:-40px;opacity:0;animation:mrise linear forwards;pointer-events:none}
+@keyframes mrise{10%{opacity:.95}100%{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+.mchip{color:#ff4d88}.mchip .ic{fill:#ff4d88;animation:hb 2.6s ease-in-out infinite}
+.mbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;font-size:20px;font-weight:800;background:linear-gradient(135deg,#ff3d7f,#ff8fb1)!important;color:#fff;box-shadow:0 14px 30px -10px #ff3d7f}
+
+/* ===== راديو ===== */
+#v-radio{--bg:#1a0f08;--bg2:#2a170c;--bg3:#3f2412;--text:#fff2dc;--muted:#c9a77c;--accent:#c97a1a;--accent2:#ffb347;--glass:rgba(42,23,12,.62);--stroke:#ffffff1f;color:var(--text);color-scheme:dark;
+ background:radial-gradient(70% 26% at 50% 0,#7a4210aa,transparent),repeating-linear-gradient(90deg,#1d1109 0 3px,#25160b 3px 6px)}
+.rd-top{margin:0 0 10px;padding:12px;text-align:center;font-weight:800;font-size:18px;letter-spacing:1px;color:#ffd9a0;background:linear-gradient(180deg,#6b3a12,#3a1e08);border-bottom:4px solid #c9972b;box-shadow:0 10px 30px -10px #000}
+.rd-set{margin:6px 12px;padding:14px;border-radius:26px;border:3px solid #6b4420;background:linear-gradient(145deg,#4a2a12,#2a170c);box-shadow:inset 0 2px 0 #ffffff22,0 18px 40px -16px #000}
+.rd-dial{height:78px;border-radius:14px;background:linear-gradient(#2a1c0d,#100803);border:3px solid #7a5428;position:relative;overflow:hidden;box-shadow:inset 0 0 22px #000}
+.rd-dial::before{content:"";position:absolute;left:8px;right:8px;bottom:8px;height:18px;background:repeating-linear-gradient(90deg,#ffcf8a 0 1px,transparent 1px 12px)}
+.rd-dial::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#ffffff14,transparent 45%)}
+.rd-nd{position:absolute;top:0;bottom:0;width:2px;left:50%;background:#ff4d3d;box-shadow:0 0 10px #ff4d3d;z-index:2}
+.rd-set.on .rd-nd{animation:ndl 9s ease-in-out infinite}
+@keyframes ndl{0%,100%{left:10%}50%{left:86%}}
+.rd-nm{position:absolute;top:10px;left:0;right:0;text-align:center;font-size:17px;font-weight:700;color:#ffcf8a;text-shadow:0 0 12px #ffae42;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-eq{display:flex;gap:4px;align-items:flex-end;justify-content:center;height:26px;margin:10px 0 2px}
+.rd-eq i{width:6px;height:6px;border-radius:2px;background:#ffb347;transition:height .2s}
+.rd-set.on .rd-eq i{animation:eqb .9s ease-in-out infinite alternate}
+.rd-eq i:nth-child(2){animation-delay:.15s}.rd-eq i:nth-child(3){animation-delay:.3s}.rd-eq i:nth-child(4){animation-delay:.45s}.rd-eq i:nth-child(5){animation-delay:.6s}.rd-eq i:nth-child(6){animation-delay:.75s}.rd-eq i:nth-child(7){animation-delay:.2s}
+@keyframes eqb{from{height:5px}to{height:26px}}
+.rd-ctl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.rd-ctl button{flex:none;width:52px;height:52px;padding:0;border-radius:50%;font-size:22px;background:linear-gradient(135deg,#c97a1a,#ffb347);color:#2b1500}
+.rd-ctl input[type=range]{padding:0;height:30px;border:0;background:transparent;flex:1}
+.rd-st{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid var(--bg3);cursor:pointer}
+.rd-st:last-child{border:0}.rd-st.on b{color:var(--accent2)}
+.rd-st img,.rd-st .ph{width:42px;height:42px;border-radius:10px;object-fit:cover;background:var(--bg3);flex:none;display:grid;place-items:center;font-size:20px}
+.rd-st .nm{flex:1;min-width:0}.rd-st .nm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-chat{display:flex;flex-direction:column;gap:8px;height:300px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:4px 0}
+.rd-chat .msg{max-width:88%}.rd-chat>.empty{margin:auto}
+
+/* ===== ثيم رومانسي ===== */
+html[data-theme="romantic"]{--bg:#12060a;--bg2:#1f0a13;--bg3:#34101f;--nav:#0a0306;--g2:#5a1232;--accent:#c2185b;--accent2:#ff8fb1;--mine:#7a1237;--text:#ffeef3;--muted:#c79aa9;color-scheme:dark}
+html[data-theme="romantic"],html[data-theme="romantic"] body{background-color:#12060a;background-image:radial-gradient(55% 38% at 12% 100%,rgba(255,170,80,.34),transparent 70%),radial-gradient(55% 38% at 88% 100%,rgba(255,170,80,.30),transparent 70%),radial-gradient(85% 55% at 50% 0,rgba(194,24,91,.38),transparent 70%),linear-gradient(180deg,#1a070d,#0d0206);background-attachment:fixed}
+html[data-theme="romantic"] #topbar{margin-top:calc(max(8px,env(safe-area-inset-top)) + 30px)}
+html[data-theme="romantic"][data-theme="romantic"] .msg.mine:not(.stk){background:linear-gradient(135deg,#d81b60,#ff6f9c)!important;color:#fff!important;border:1px solid #ffffff33!important;box-shadow:0 8px 20px -8px #ff4d88}
+html[data-theme="romantic"][data-theme="romantic"] .msg.theirs:not(.stk){background:linear-gradient(135deg,#2a0c17,#3c1223)!important;border:1px solid #ff6f9c77!important;color:#ffeef3!important}
+html[data-theme="romantic"] .msg.mine:not(.stk)::after{content:"💕";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-theme="romantic"] .msg.theirs:not(.stk)::after{content:"🌹";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-theme="romantic"] #v-watch::before,html[data-theme="romantic"] #v-watch::after{background:repeating-linear-gradient(90deg,#4a0818 0 6px,#8a1236 6px 12px,#5c0b20 12px 18px)}
+html[data-theme="romantic"] .cin-val{background:linear-gradient(180deg,#5c0b20,#9b1642);border-bottom-color:#e8b86a}
+html[data-theme="romantic"] .cin-hall{background:linear-gradient(180deg,#14050a,#2a0c17 55%,#4a1226)}
+#rom-deco{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#rom-deco .rk{position:absolute;border-radius:50%;background:radial-gradient(circle,#ffd6a0cc,#ffb06a33 60%,transparent 70%);filter:blur(2px);animation:rkf 9s ease-in-out infinite alternate}
+@keyframes rkf{from{transform:translate(0,0) scale(1);opacity:.35}to{transform:translate(18px,-26px) scale(1.25);opacity:.8}}
+#rom-deco .rp{position:absolute;top:-30px;width:14px;height:18px;border-radius:0 100% 0 100%;background:linear-gradient(135deg,#ff6f9c,#c2185b);opacity:.85;animation:rpf linear infinite}
+@keyframes rpf{0%{transform:translate(0,-10px) rotate(0)}50%{transform:translate(40px,55vh) rotate(180deg)}100%{transform:translate(-20px,110vh) rotate(360deg)}}
+#rom-deco .cdl{position:absolute;bottom:0;width:28px;height:calc(100px*var(--s,1))}
+#rom-deco .cdl::before{content:"";position:absolute;left:50%;bottom:30%;width:230px;height:230px;margin-left:-115px;background:radial-gradient(circle,rgba(255,176,80,.30),transparent 68%)}
+#rom-deco .wx{position:absolute;bottom:0;left:0;right:0;height:64%;border-radius:6px 6px 2px 2px;background:linear-gradient(90deg,#e9d7b8,#fff4de 42%,#e0c9a2)}
+#rom-deco .fm{position:absolute;bottom:62%;left:50%;width:13px;height:28px;margin-left:-6.5px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 72%,#fff7c2,#ffb347 58%,#ff6a00);filter:drop-shadow(0 0 14px #ffb347);transform-origin:50% 100%;animation:flk .16s ease-in-out infinite alternate}
+@keyframes flk{0%{transform:scale(1,1) rotate(-3deg)}100%{transform:scale(.9,1.1) rotate(3deg)}}
+#rom-top{position:fixed;top:0;left:0;right:0;height:46px;z-index:56;pointer-events:none}
+#rom-top .fl2{position:absolute;inset:0;background:var(--rom-fairy) 0 0/60px 34px repeat-x;filter:drop-shadow(0 0 6px #ffcf8a);animation:ftw 2.8s ease-in-out infinite}
+
+/* ===== ثيمات مناسبات جديدة ===== */
+html[data-fest2] #topbar{margin-top:calc(max(8px,env(safe-area-inset-top)) + 40px)}
+#f2-deco{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#f2-deco .sk{position:absolute;left:0;right:0;bottom:0;height:130px;background-repeat:repeat-x;background-position:0 100%;opacity:.95}
+#f2-deco .bl{position:absolute;bottom:-90px;width:34px;height:44px;border-radius:50% 50% 48% 48%;background:radial-gradient(circle at 35% 30%,#ffffffaa,transparent 40%),var(--c);animation:bup linear infinite;opacity:.85}
+#f2-deco .bl::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:46px;background:#fff6}
+#f2-deco .cf{position:absolute;top:-20px;width:8px;height:14px;background:var(--c);opacity:.9;animation:cff linear infinite}
+@keyframes cff{0%{transform:translate(0,-10px) rotate(0)}100%{transform:translate(30px,110vh) rotate(720deg)}}
+#f2-deco .sun{position:absolute;top:70px;inset-inline-end:8%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fff6b0,#ffd23d 60%,#ffb300);box-shadow:0 0 60px 20px #ffe27a88}
+#f2-deco .cl{position:absolute;font-size:46px;opacity:.9;animation:cld linear infinite}
+@keyframes cld{from{transform:translateX(-80px)}to{transform:translateX(calc(100vw + 80px))}}
+#f2-deco .by{position:absolute;font-size:26px;animation:bfy 16s ease-in-out infinite}
+@keyframes bfy{0%{transform:translate(0,0)}25%{transform:translate(30vw,-40px)}50%{transform:translate(60vw,20px)}75%{transform:translate(85vw,-30px)}100%{transform:translate(110vw,0)}}
+#f2-deco .egg{position:absolute;bottom:128px;width:26px;height:34px;border-radius:50% 50% 48% 48%/60% 60% 40% 40%;background:repeating-linear-gradient(0deg,var(--c) 0 6px,#fff8 6px 9px);animation:eggb 3s ease-in-out infinite alternate}
+@keyframes eggb{to{transform:translateY(-8px) rotate(6deg)}}
+#f2-deco .fwk{position:absolute;width:4px;height:4px;border-radius:50%;animation:fwb 3.6s ease-out infinite;box-shadow:0 -42px 0 #ffc857,30px -30px 0 #ff4d6d,42px 0 0 #4cc9f0,30px 30px 0 #ffc857,0 42px 0 #ff4d6d,-30px 30px 0 #4cc9f0,-42px 0 0 #ffc857,-30px -30px 0 #ff4d6d}
+@keyframes fwb{0%{transform:scale(.1);opacity:1}60%{transform:scale(1.4);opacity:1}100%{transform:scale(2.1);opacity:0}}
+#f2-deco .fl{position:absolute;top:96px;width:64px;height:42px;border-radius:3px;overflow:hidden;background:linear-gradient(#ce1126 0 33%,#fff 33% 66%,#000 66%);animation:wv 2.4s ease-in-out infinite;box-shadow:0 6px 14px -6px #000a}
+.fl::after{content:"🦅";position:absolute;inset:0;display:grid;place-items:center;font-size:15px;filter:sepia(1) saturate(4) hue-rotate(-10deg)}
+@keyframes wv{0%,100%{transform:skewY(-3deg) rotate(-2deg)}50%{transform:skewY(3deg) rotate(2deg)}}
+#f2-deco .gf{position:absolute;bottom:6px;font-size:34px;animation:gfb 2.2s ease-in-out infinite alternate}
+@keyframes gfb{to{transform:translateY(-10px) rotate(6deg)}}
+#f2-top{position:fixed;top:0;left:0;right:0;height:80px;z-index:56;pointer-events:none}
+#f2-top .tk{position:absolute;top:0;left:0;right:0;height:22px;overflow:hidden;direction:ltr;background:color-mix(in srgb,var(--bg) 78%,transparent);font-size:12.5px;line-height:22px;color:var(--accent2)}
+#f2-top .tk span{display:inline-block;direction:rtl;white-space:nowrap;padding-left:100%;animation:tkm 34s linear infinite}
+#f2-top .fb{position:absolute;top:22px;left:0;right:0;height:44px;background:var(--f2-strip) 0 0/120px 44px repeat-x}
+#f2-top .fb2{top:38px;background-position:60px 0;opacity:.85}
+html[data-fest2] #tb-name::after{font-size:12px;color:var(--accent2)}
+html[data-fest2="nasim"] #tb-name::after{content:" · شم النسيم 🌱"}
+html[data-fest2="oct6"] #tb-name::after{content:" · تحيا مصر 🇪🇬"}
+html[data-fest2="bday"] #tb-name::after{content:" · كل سنة وانت طيب 🎂"}
+html[data-fest2] .cin-val::after{background:var(--f2-strip) 0 0/120px 44px repeat-x;height:44px;margin-top:0;filter:none}
+html[data-fest2] #v-watch #stage{box-shadow:0 0 0 5px #1b1204,0 0 0 7px var(--accent2),0 0 90px -6px rgba(255,220,140,.5),0 40px 60px -30px rgba(255,220,140,.35)}
+
+/* شم النسيم (ربيع فاتح) */
+html[data-fest2="nasim"][data-fest2="nasim"]{--bg:#effbe8!important;--bg2:#ffffff!important;--bg3:#dcf3cf!important;--nav:#e6f6dc!important;--g2:#cfeebc!important;--accent:#3aa655!important;--accent2:#f2a000!important;--mine:#bfe8a8!important;--text:#16301a!important;--muted:#5b7a5f!important;color-scheme:light!important}
+html[data-fest2="nasim"][data-fest2="nasim"],html[data-fest2="nasim"][data-fest2="nasim"] body{background-color:#eaf9d8!important;background-image:linear-gradient(180deg,#bfe9ff 0%,#eaf9d8 55%,#a8e08a 130%)!important;background-attachment:fixed!important}
+html[data-fest2="nasim"][data-fest2="nasim"] .msg.mine:not(.stk){background:linear-gradient(135deg,#9be37a,#f6d94c)!important;color:#16301a!important;border:1px solid #fff8!important}
+html[data-fest2="nasim"][data-fest2="nasim"] .msg.mine .meta{color:#16301acc!important}
+html[data-fest2="nasim"][data-fest2="nasim"] .msg.theirs:not(.stk){background:#fff!important;border:1px solid #3aa65588!important;color:#16301a!important}
+html[data-fest2="nasim"] .msg.mine:not(.stk)::after{content:"🥚";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="nasim"] .msg.theirs:not(.stk)::after{content:"🌼";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="nasim"] #v-watch::before,html[data-fest2="nasim"] #v-watch::after{background:repeating-linear-gradient(90deg,#3aa655 0 10px,#fff 10px 12px,#f6d94c 12px 22px,#fff 22px 24px,#ff9ec4 24px 34px,#fff 34px 36px)}
+html[data-fest2="nasim"] .cin-val{background:repeating-linear-gradient(90deg,#3aa655 0 12px,#fff 12px 14px,#f6d94c 14px 26px,#fff 26px 28px,#ff9ec4 28px 40px,#fff 40px 42px);border-bottom-color:#f2a000}
+html[data-fest2="nasim"] .cin-hall{background:linear-gradient(180deg,#143a1c,#1f5a2c 55%,#3a6b1f)}
+/* 6 أكتوبر */
+html[data-fest2="oct6"][data-fest2="oct6"]{--bg:#0b0d12!important;--bg2:#14171f!important;--bg3:#222733!important;--nav:#07080b!important;--g2:#3a0f16!important;--accent:#ce1126!important;--accent2:#f2c14e!important;--mine:#7a0a18!important;--text:#f6f6f6!important;--muted:#aab0bd!important;color-scheme:dark!important}
+html[data-fest2="oct6"][data-fest2="oct6"],html[data-fest2="oct6"][data-fest2="oct6"] body{background-color:#0b0d12!important;background-image:linear-gradient(180deg,#070912 0%,#16090e 60%,#3a0f16 130%)!important;background-attachment:fixed!important}
+html[data-fest2="oct6"][data-fest2="oct6"] .msg.mine:not(.stk){background:linear-gradient(135deg,#ce1126,#8a0b1a)!important;color:#fff!important;border:1px solid #ffffff33!important}
+html[data-fest2="oct6"][data-fest2="oct6"] .msg.theirs:not(.stk){background:linear-gradient(135deg,#10131b,#1c2030)!important;border:1px solid #f2c14e88!important;color:#f6f6f6!important}
+html[data-fest2="oct6"] .msg.mine:not(.stk)::after{content:"🇪🇬";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="oct6"] .msg.theirs:not(.stk)::after{content:"⭐";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="oct6"] #v-watch::before,html[data-fest2="oct6"] #v-watch::after{background:repeating-linear-gradient(90deg,#ce1126 0 12px,#fff 12px 24px,#111 24px 36px)}
+html[data-fest2="oct6"] .cin-val{background:repeating-linear-gradient(90deg,#ce1126 0 14px,#fff 14px 28px,#111 28px 42px);border-bottom-color:#f2c14e}
+html[data-fest2="oct6"] .cin-hall{background:linear-gradient(180deg,#07080b,#16090e 55%,#3a0f16)}
+/* عيد ميلاد */
+html[data-fest2="bday"][data-fest2="bday"]{--bg:#150a24!important;--bg2:#21103a!important;--bg3:#34195a!important;--nav:#0d0618!important;--g2:#5a1f8a!important;--accent:#e040fb!important;--accent2:#ffd166!important;--mine:#6a1b9a!important;--text:#fff0fb!important;--muted:#c9a6d9!important;color-scheme:dark!important}
+html[data-fest2="bday"][data-fest2="bday"],html[data-fest2="bday"][data-fest2="bday"] body{background-color:#150a24!important;background-image:linear-gradient(160deg,#150a24 0%,#3b1466 55%,#c2185b 130%)!important;background-attachment:fixed!important}
+html[data-fest2="bday"][data-fest2="bday"] .msg.mine:not(.stk){background:linear-gradient(135deg,#ff6b9d,#ffd166)!important;color:#2a0a2a!important;border:1px solid #fff6!important}
+html[data-fest2="bday"][data-fest2="bday"] .msg.mine .meta{color:#2a0a2acc!important}
+html[data-fest2="bday"][data-fest2="bday"] .msg.theirs:not(.stk){background:linear-gradient(135deg,#2a1250,#3b1a6a)!important;border:1px solid #ffd16688!important;color:#fff0fb!important}
+html[data-fest2="bday"] .msg.mine:not(.stk)::after{content:"🎈";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="bday"] .msg.theirs:not(.stk)::after{content:"🎁";position:absolute;top:-9px;inset-inline-end:12px;font-size:13px;line-height:1}
+html[data-fest2="bday"] #v-watch::before,html[data-fest2="bday"] #v-watch::after{background:repeating-linear-gradient(90deg,#e040fb 0 10px,#fff 10px 12px,#ffd166 12px 22px,#fff 22px 24px,#4cc9f0 24px 34px,#fff 34px 36px)}
+html[data-fest2="bday"] .cin-val{background:repeating-linear-gradient(90deg,#e040fb 0 12px,#fff 12px 14px,#ffd166 14px 26px,#fff 26px 28px,#4cc9f0 28px 40px,#fff 40px 42px);border-bottom-color:#ffd166}
+html[data-fest2="bday"] .cin-hall{background:linear-gradient(180deg,#120720,#2a1250 55%,#5a1f8a)}
+.f2btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.f2btns button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 4px;border-radius:20px;font-weight:700;font-size:13.5px}
+.f2btns button span{font-size:28px}
+.f2t{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--bg3)}.f2t:last-child{border:0}
+.adk{padding:12px;margin-top:8px;border-radius:18px;background:color-mix(in srgb,var(--bg) 45%,transparent);border:1px solid var(--stroke);cursor:pointer;-webkit-user-select:none;user-select:none}
+.adk.dn{opacity:.45}
+.adk .tx{font-family:"Amiri","Amiri Quran","Traditional Arabic",serif;font-size:20px;line-height:2.1;direction:rtl;text-align:justify;white-space:pre-wrap}
+.adk .rp{display:inline-block;margin-top:6px;padding:2px 12px;border-radius:99px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:14px}
+</style>
+
+<script>
+(()=>{
+if(window.__islAddon3)return;window.__islAddon3=1;
+const root=document.documentElement;
+const jl=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const js=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const appOn3=()=>{const a=$("#app");return !!a&&!a.classList.contains("hidden")};
+const p2=n=>String(n).padStart(2,"0");
+const dstr=(d=new Date())=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());
+const ar=n=>Number(n).toLocaleString("ar-EG");
+const mkb=(t,fn,c)=>{const b=el("button",c||"",t);b.type="button";b.onclick=fn;return b};
+const sendChat=t=>{S.msgs.push({u:S.cur,text:t,t:Date.now()});save();toast("اتبعت في الشات 💬")};
+const svgUri=s=>"data:image/svg+xml,"+encodeURIComponent(s);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+I.radio='<rect x="3" y="8" width="18" height="12" rx="3"/><path d="M6 8l11-5"/><circle cx="16" cy="14" r="2.5"/><path d="M7 13h4M7 16h4"/>';
+I.pin2=I.pin||'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>';
+S.rmsgs=S.rmsgs||[];S.miss=S.miss||[];S.xpray=S.xpray||[];S.adk=S.adk||[];S.eid=S.eid||[];
+["rmsgs","miss","xpray","adk","eid"].forEach(k=>{if(!AK.includes(k))AK.push(k)});
+if(!OBJK.includes("rnow"))OBJK.push("rnow");
+
+/* =====================================================
+   1) ثيم رومانسي ضمن الثيمات العادية
+   ===================================================== */
+const FAIRY=svgUri("<svg xmlns='http://www.w3.org/2000/svg' width='60' height='34' viewBox='0 0 60 34'><path d='M0 4Q30 16 60 4' fill='none' stroke='#3a2a1a' stroke-width='1.2'/><g fill='#ffe2a8'><circle cx='10' cy='12' r='3'/><circle cx='30' cy='15' r='3'/><circle cx='50' cy='12' r='3'/></g></svg>");
+function buildRom(){if($("#rom-deco"))return;
+ root.style.setProperty("--rom-fairy",'url("'+FAIRY+'")');
+ const d=el("div");d.id="rom-deco";let h="";
+ for(let i=0;i<10;i++){const s=rnd(40,120);h+="<i class='rk' style='left:"+rnd(0,95)+"%;top:"+rnd(5,80)+"%;width:"+s+"px;height:"+s+"px;animation-delay:-"+rnd(0,8)+"s'></i>"}
+ for(let i=0;i<14;i++)h+="<i class='rp' style='left:"+rnd(0,98)+"%;animation-duration:"+rnd(11,20)+"s;animation-delay:-"+rnd(0,18)+"s'></i>";
+ [[4,1],[10,.78],[89,1],[95,.82]].forEach(([l,s])=>{h+="<div class='cdl' style='left:"+l+"%;--s:"+s+"'><div class='fm'></div><div class='wx'></div></div>"});
+ d.innerHTML=h;document.body.prepend(d);
+ const t=el("div");t.id="rom-top";t.innerHTML="<div class='fl2'></div>";document.body.append(t)}
+function romSync(){if(root.getAttribute("data-theme")==="romantic")buildRom();else{const a=$("#rom-deco"),b=$("#rom-top");if(a)a.remove();if(b)b.remove()}}
+new MutationObserver(romSync).observe(root,{attributes:true,attributeFilter:["data-theme"]});romSync();
+function injectRom(){const th=$("#v-set .thw");if(!th||th.querySelector("#rom-grp"))return;
+ const w=el("div");w.id="rom-grp";const h=el("div","small muted","💕 رومانسي");h.style.cssText="margin:12px 2px 6px;font-weight:700";
+ const g=el("div","themes"),b=el("button",root.getAttribute("data-theme")==="romantic"?"on":""),s=el("div","sw");
+ b.type="button";s.style.background="linear-gradient(135deg,#12060a 46%,#ff6f9c 46%)";b.append(s,el("span","","قعدة رومانسية 🕯️"));
+ b.onclick=()=>{S.theme="romantic";save();applyTheme();$$("#v-set .thw .themes button").forEach(x=>x.classList.remove("on"));b.classList.add("on")};
+ g.append(b);w.append(h,g);th.prepend(w)}
+{const v=$("#v-set");if(v)new MutationObserver(injectRom).observe(v,{childList:true,subtree:true})}
+setInterval(()=>{injectRom();const b=$("#rom-grp button");if(b)b.classList.toggle("on",root.getAttribute("data-theme")==="romantic")},900);injectRom();
+
+/* =====================================================
+   2) وحشتيني / وحشتني
+   ===================================================== */
+const LSM="ehna_miss_seen_";let lastMiss=0;
+const missWord=u=>u==="y"?"وحشتيني":"وحشتني";
+function hearts(host,n){for(let i=0;i<n;i++){const h=el("i","mh","♥");h.style.cssText="left:"+rnd(2,96)+"%;font-size:"+rnd(18,60)+"px;color:hsl("+rnd(330,352)+" 90% "+rnd(55,72)+"%);animation-duration:"+rnd(3,6.5)+"s;animation-delay:"+rnd(0,2.5)+"s";host.append(h)}}
+function chime(){try{const A=window.AudioContext||window.webkitAudioContext,x=new A();[659,784,988].forEach((f,i)=>{const o=x.createOscillator(),g=x.createGain(),t=x.currentTime+i*.18;o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.16,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(x.destination);o.start(t);o.stop(t+.55)})}catch(e){}}
+function showMiss(m){$("#miss-ov")?.remove();const d=el("div");d.id="miss-ov";
+ const c=el("div");c.append(el("div","mn",U(m.u).name+" بيقولك"),el("div","mw",missWord(m.u)+" 💗"));d.append(c);hearts(d,42);
+ const close=()=>d.remove();d.onclick=close;setTimeout(close,8000);document.body.append(d);navigator.vibrate&&navigator.vibrate([200,100,200,100,400]);chime()}
+let lastSend=0;
+function sendMiss(){const n=Date.now();if(n-lastSend<6000)return toast("استنى شوية 💗");lastSend=n;
+ S.miss.push({_id:"ms_"+n+"_"+S.cur,u:S.cur,t:n});if(S.miss.length>40)S.miss.splice(0,S.miss.length-40);
+ S.msgs.push({u:S.cur,text:missWord(S.cur)+" 💗",t:n});save();
+ const d=el("div");d.id="miss-ov";d.style.background="radial-gradient(70% 60% at 50% 50%,#ff2d6f55,transparent 75%)";d.style.backdropFilter="none";d.style.pointerEvents="none";hearts(d,18);document.body.append(d);setTimeout(()=>d.remove(),6500);
+ toast("اتبعتت لـ "+U(other(S.cur)).name+" 💗");navigator.vibrate&&navigator.vibrate(30)}
+const SAR=["إيه أكتر حاجة بتخاف تخسرها؟","مين آخر شخص فكرت فيه قبل ما تنام؟","هل بتثق في الناس بسرعة؟","إيه أكتر موقف ندمت عليه؟","هل سبق وكذبت عشان متزعلش حد؟","مين أكتر شخص فاهمك؟","إيه أكتر صفة نفسك تغيرها في نفسك؟","هل بتخبي حزنك عن الناس؟","إمتى آخر مرة حسيت إنك وحيد؟","إيه أكتر حاجة بتفرحك؟","هل بتسامح بسهولة؟","مين الشخص اللي مستحيل تنساه؟","هل بتحكم على الناس من أول مقابلة؟","إيه أكبر سر محتفظ بيه؟","هل أنت راضي عن حياتك؟","إيه أغرب موقف حصلك قدام الناس؟","هل كلمت نفسك قبل كده؟","هل عملت نفسك مشوفتش حد عشان متسلمش عليه؟","إيه أغرب كذبة قلتها؟","هل ضحكت في وقت مينفعش تضحك فيه؟","إيه أكتر اسم دلع محرج اتقالك؟","هل بعت رسالة للشخص الغلط؟","هل اتقفشت وأنت بتعمل حاجة غلط؟","إيه أغبى قرار أخدته؟","هل بتتكلم مع نفسك قدام المراية؟","إيه أكتر موقف نفسك الأرض تنشق وتبلعك فيه؟","هل عملت نفسك فاهم موضوع وأنت مش فاهم حاجة؟","هل نمت وأنت بتكلم حد؟","إيه أغرب حلم حلمته؟","هل فتحت شات حد بالغلط؟","هل أعجبت بحد ومقولتلوش؟","هل فيه شخص مستني منه رسالة دلوقتي؟","هل ممكن تعترف بإعجابك الأول؟","إيه أكتر حاجة بتشدك في شخصية حد؟","هل الغيرة عندك دليل حب؟","هل ممكن تسامح حد تجاهلك؟","هل سبق وحسيت إنك مش أولوية عند حد؟","هل بتزعل لما حد يتأخر في الرد؟","مين آخر شخص خلاك تبتسم بسبب رسالة؟","هل ممكن تحب شخص كان مجرد صديق؟","هل بتفتكر تفاصيل كلام الناس؟","هل فيه شخص نفسك ترجع تكلمه؟","هل ممكن تدي فرصة تانية لشخص خذلك؟","إيه أكتر تصرف بيخليك تتعلق بحد؟","هل بتبين اهتمامك ولا بتستنى الطرف التاني؟","مين الشخص اللي مش قادر تواجهه بحقيقة؟","هل سبق وحكمت على حد ظلم؟","إيه أكتر حاجة بتغير منها؟","هل فيه حد بتعامله كويس وأنت مش مرتاحله؟","هل خسرت صديق بسبب سوء تفاهم؟","إيه أكتر حاجة بتخاف الناس تعرفها عنك؟","هل سبق ومثلت إنك سعيد؟","مين الشخص اللي نفسك تعاتبه؟","هل بتندم على ثقتك في حد؟","إيه أسوأ صفة في أصحابك؟","هل سبق وخذلت شخص كان محتاجك؟","هل بتفضل الحقيقة حتى لو هتزعلك؟","هل فيه شخص بتراقب أخباره من بعيد؟","إيه أكتر موقف غير نظرتك لشخص؟","هل سبق واعتذرت وأنت شايف إنك مش غلطان؟","لو تقدر ترجع بالزمن، هتغير إيه؟","إيه القرار اللي ممكن يغير حياتك؟","هل أنت الشخص اللي كنت بتحلم تكونه؟","إيه 
+const TAH=["اتكلم بصوت طفل لمدة دقيقة.","غني أغنية بصوت الأوبرا.","قل اسمك بالعكس.","اتكلم باللهجة الصعيدي لمدة دقيقتين.","احكي نكتة حتى لو بايخة.","قلد شخصية كرتونية.","اتكلم من غير ما تقول حرف الميم لمدة دقيقة.","اعمل إعلان عن أي حاجة موجودة جنبك.","اضحك لمدة 20 ثانية من غير سبب.","قول جملة صعبة بسرعة 5 مرات.","اتكلم كأنك مذيع أخبار.","قلد طريقة كلام واحد مشهور.","اخترع اسم غريب لنفسك.","اوصف يومك كأنك معلق مباراة.","غني أغنية من غير ما تقول كلماتها، باللحن فقط.","مثل إنك كسبت مليون جنيه.","مثل إنك مدرس غضبان.","مثل إنك بتطلب أكل من مطعم فاخر.","اعمل مشهد درامي لمدة 30 ثانية.","مثل إنك بتتكلم مع روبوت.","اعمل نفسك مذيع بيقدم نشرة جوية.","مثل إنك أول مرة تشوف موبايل.","اتصرف كأنك شخصية في فيلم أكشن.","مثل إنك بتشرح حاجة مش فاهمها.","اعمل مشهد اعتذار بطريقة كوميدية.","قول 5 أسماء بلاد في 10 ثواني.","اذكر 7 أكلات بحرف الميم.","قول 5 حيوانات بتبدأ بحرف السين.","عد من 30 لـ1 بسرعة.","قول 5 أسماء أفلام في 15 ثانية.","اذكر 10 ألوان من غير توقف.","قول 5 حاجات موجودة في المطبخ.","اذكر 5 أسماء بنات بحرف النون.","قول 5 كلمات إنجليزي في 10 ثواني.","احكي قصة من 3 جمل عن كلمة يختارها اللاعبون.","قول أول انطباع أخدته عن كل لاعب.","اختار لاعب وامدحه في 3 صفات.","احكي موقف محرج حصل لك.","قول حاجة عمرك ما قلتها للمجموعة.","اختار لاعب واسأله سؤال صراحة.","اعترف بحاجة كنت فاهمها غلط.","قول مين أكتر لاعب بيضحكك.","احكي عن موقف اتوترت فيه جدًا.","اختار لاعب واحكيله ذكرى حلوة بينكم.","قول صفة نفسك تكتسبها من لاعب تاني.","كل اللاعبين يقلدوا نفس الشخصية.","اختاروا كلمة وممنوع حد يقولها لمدة دقيقة.","كل لاعب يقول كلمة تكمل قصة جماعية.","اعملوا مسابقة أسرع واحد يقول أسماء 10 بلاد.","كل لاعب يقول مجاملة للي على يمينه.","اتفقوا على اسم مضحك للمجموعة.","كل لاعب يمثل فيلم والباقي يخمنوه.","العبوا حجر ورقة مقص والفائز يختار سؤال.","كل لاعب يقول حقيقة غريبة عن نفسه.","اعملوا أغنية جماعية بكلمات عشوائية.","ابعت لصاحبك رسالة فيها 3 إيموجي فقط وخليه يخمن قصدك.","ابعت رسالة شكر لشخص ساعدك.","سجل رسالة صوتية كأنك مذيع راديو.","اكتب جملة كاملة من غير استخدام حرف الألف.","ابعت لنفسك رسالة تشجيع 
+للمستقبل.","اكتب قصة قصيرة في 20 ثانية.","اخترع لقب مضحك لأحد اللاعبين بموافقته.","قول لكل لاعب حاجة مميزة فيه.","اكتب بيت شعر من تأليفك.","احكي قصة باستخدام 5 كلمات يختارها اللاعبون.","اتكلم لمدة دقيقة كاملة من غير ما تتوقف.","احكي قصة مضحكة حصلت لك بالتفصيل.","مثل مشهد حزين وبعده مشهد كوميدي فورًا.","اخترع لعبة جديدة واشرح قوانينها.","اقنع المجموعة إنك أفضل لاعب في اللعبة.","قول 15 كلمة تبدأ بحرف الباء في 20 ثانية.","احكي قصة فيها 3 شخصيات من اختيار المجموعة.","جاوب على 5 أسئلة سريعة من غير تفكير طويل.","اخترع أغنية عن المجموعة وغنيها.","خلي المجموعة تختار لك شخصية تمثلها لمدة دقيقة."];
+const NS=SAR.length,NT=TAH.length;
+function buildTod(c){const x=S.g_tod&&typeof S.g_tod==="object"?S.g_tod:(S.g_tod={k:"",x:"",by:"a",n:0});x.used=Array.isArray(x.used)?x.used:[];
+ const pick=kind=>{const pool=[];if(kind!=="d")for(let i=0;i<NS;i++)pool.push(i);if(kind!=="s")for(let i=0;i<NT;i++)pool.push(NS+i);
+  let free=pool.filter(i=>!x.used.includes(i));if(!free.length){x.used=x.used.filter(i=>!pool.includes(i));free=pool}
+  const i=free[Math.floor(Math.random()*free.length)];x.i=i;x.k=i<NS?"s":"d";x.x=i<NS?SAR[i]:TAH[i-NS];x.by=S.cur;x.n=Date.now();x.used.push(i);save();rGames()};
+ c.replaceChildren(hd("game","صراحة ولا تحدي"));
+ const q=el("div","gbig",x.x||"اسحب كارت 👇");if(!x.x)q.className="small muted";q.style.margin="8px 0";c.append(q);
+ if(x.x){c.append(el("div","small muted",(x.k==="s"?"🗣 صراحة":"🔥 تحدي")+" · سحبها "+U(x.by).name))}
+ const r=el("div","row");r.style.marginTop="10px";
+ r.append(mkb("🗣 صراحة",()=>pick("s"),"primary"),mkb("🔥 تحدي",()=>pick("d"),"primary"),mkb("🎲 أي حاجة",()=>pick("r")));
+ r.querySelectorAll("button").forEach(b=>b.style.flex="1");c.append(r);
+ if(x.x){const b=mkb("📤 ابعته في الشات",()=>sendChat((x.k==="s"?"🗣 صراحة: ":"🔥 تحدي: ")+x.x));b.style.cssText="width:100%;margin-top:8px";c.append(b)}
+ const used=x.used.length;c.append(el("div","small muted","اتسألنا "+used+" من "+(NS+NT)+" (من غير تكرار لحد ما تخلصوا الكل)"))}
+{const _rg=rGames;rGames=function(){_rg();try{const v=$("#v-games");if(!v)return;const h=[...v.querySelectorAll(".card h3")].find(z=>z.textContent.includes("صراحة ولا تحدي"));if(h){const c=h.closest(".card");if(c)buildTod(c)}}catch(e){}}}
+
+/* =====================================================
+   4) راديو
+   ===================================================== */
+VL.radio="الراديو";
+{const nb=el("button","sec");nb.type="button";nb.dataset.v="radio";nb.innerHTML="<span>"+ic("radio")+"</span><small>راديو</small>";nb.onclick=()=>go("radio");SEC.push("radio");$("#nav .more").before(nb);
+ const s=el("section","view hidden");s.id="v-radio";$("main").append(s)}
+const RB=["https://de1.api.radio-browser.info","https://nl1.api.radio-browser.info","https://at1.api.radio-browser.info"];
+const RCATS=[["eg","🇪🇬 مصر","countrycode=EG"],["quran","📖 قرآن كريم","tag=quran"],["islam","🕌 إسلامي","tag=islamic"],["ar","🎵 أغاني عربي","tag=arabic"],["news","📰 أخبار مصر","countrycode=EG&tag=news"],["world","🌍 الأشهر عالميًا",""]];
+const RA={a:new Audio(),s:null,on:false,cat:"eg",list:[],q:"",busy:0,vol:jl("ehna_rvol",.8)};
+RA.a.preload="none";RA.a.volume=RA.vol;
+const canHls=!!RA.a.canPlayType("application/vnd.apple.mpegurl");
+async function rbq(q){for(const b of RB){try{const r=await fetch(b+"/json/stations/search?"+q+"&hidebroken=true&order=clickcount&reverse=true&limit=90");if(r.ok)return await r.json()}catch(e){}}throw new Error("rb")}
+const rv=$("#v-radio");
+const rTop=el("div","rd-top","📻 راديو إحنا");
+const rSet=el("div","rd-set"),rDial=el("div","rd-dial"),rNd=el("div","rd-nd"),rNm=el("div","rd-nm","اختار محطة"),rEq=el("div","rd-eq");
+for(let i=0;i<7;i++)rEq.append(el("i"));
+rDial.append(rNd,rNm);
+const rCtl=el("div","rd-ctl"),rPlay=el("button","","▶"),rVol=el("input");rPlay.type="button";rVol.type="range";rVol.min=0;rVol.max=100;rVol.value=Math.round(RA.vol*100);
+rVol.oninput=()=>{RA.vol=rVol.value/100;RA.a.volume=RA.vol;js("ehna_rvol",RA.vol)};
+rPlay.onclick=()=>{if(!RA.s)return toast("اختار محطة الأول");if(RA.on)RA.a.pause();else RA.a.play().catch(()=>toast("المحطة دي مش شغالة دلوقتي"))};
+rCtl.append(rPlay,rVol);
+const rNow=el("div","small muted");rNow.style.cssText="text-align:center;margin-top:8px";
+rSet.append(rDial,rEq,rCtl,rNow);
+RA.a.onplaying=()=>{RA.on=true;rSet.classList.add("on");rPlay.textContent="⏸"};
+RA.a.onpause=()=>{RA.on=false;rSet.classList.remove("on");rPlay.textContent="▶"};
+RA.a.onerror=()=>{if(RA.s)toast("المحطة دي مش شغالة دلوقتي — جرّب غيرها");RA.on=false;rSet.classList.remove("on");rPlay.textContent="▶"};
+const rSc=el("div","card");rSc.append(hd("radio","المحطات"));
+const rIn=el("input");rIn.placeholder="🔍 دوّر على محطة (Nile FM, Nogoum, ...)";rIn.style.marginTop="8px";
+rIn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();RA.q=rIn.value.trim();loadSt()}});
+const rCh=el("div","i3c"),rLs=el("div");
+RCATS.forEach(([k,l])=>{const b=el("button","",l);b.type="button";b.onclick=()=>{RA.cat=k;RA.q="";rIn.value="";loadSt()};b.dataset.k=k;rCh.append(b)});
+rSc.append(rIn,rCh,rLs);
+function paintCats(){[...rCh.children].forEach(b=>b.classList.toggle("on",!RA.q&&b.dataset.k===RA.cat))}
+async function loadSt(){paintCats();const k=++RA.busy;rLs.replaceChildren(el("div","small muted","بيحمّل المحطات..."));
+ try{const qs=RA.q?"name="+encodeURIComponent(RA.q):RCATS.find(z=>z[0]===RA.cat)[2];let L=await rbq(qs);if(k!==RA.busy)return;
+  const seen=new Set();L=L.filter(s=>s.url_resolved&&/^https:/.test(s.url_resolved)&&!(+s.hls===1&&!canHls)&&!seen.has(s.name.trim().toLowerCase())&&seen.add(s.name.trim().toLowerCase())).slice(0,60);
+  RA.list=L;rLs.replaceChildren();
+  if(!L.length)return rLs.append(el("div","small muted","مفيش محطات بالبحث ده"));
+  L.forEach(s=>{const r=el("div","rd-st"+(RA.s&&RA.s.stationuuid===s.stationuuid?" on":""));let im;
+   if(s.favicon&&/^https:/.test(s.favicon)){im=el("img");im.src=s.favicon;im.loading="lazy";im.onerror=()=>{const p=el("div","ph","📻");im.replaceWith(p)}}else im=el("div","ph","📻");
+   const n=el("div","nm");n.append(el("b","",s.name.trim()),el("span","small muted",[s.country,(s.tags||"").split(",").slice(0,2).join("، "),s.bitrate?s.bitrate+"k":""].filter(Boolean).join(" · ")));
+   r.append(im,n);r.onclick=()=>playSt(s);rLs.append(r)})}
+ catch(e){if(k===RA.busy)rLs.replaceChildren(el("div","small muted","مقدرتش أجيب المحطات — اتأكد من النت"))}}
+function playSt(s){RA.s=s;RA.a.src=s.url_resolved;RA.a.play().catch(()=>toast("المحطة دي مش شغالة دلوقتي — جرّب غيرها"));
+ rNm.textContent=s.name.trim();[...rLs.children].forEach(r=>r.classList.remove("on"));
+ S.rnow={by:S.cur,name:s.name.trim(),url:s.url_resolved,t:Date.now()};save();loadNowLine()}
+function loadNowLine(){rNow.replaceChildren();const n=S.rnow;if(!n||n.by===S.cur||Date.now()-n.t>15*6e4)return;
+ const b=mkb("▶ اسمع معاه",()=>{playSt({stationuuid:"x",name:n.name,url_resolved:n.url,country:"",tags:""})},"primary");b.style.marginTop="6px";
+ rNow.append(el("span","","🎧 "+U(n.by).name+" بيسمع: "+n.name+" "),b)}
+/* شات الراديو */
+const rCc=el("div","card");rCc.append(hd("chat","شات الراديو"));
+const rChat=el("div","rd-chat"),rQ=el("div","qbar"),rF=el("div","composer2"),rI=el("input"),rS=bt("primary send","send");
+rI.placeholder="اكتب وانتم بتسمعوا...";rI.autocomplete="off";rS.type="button";rF.append(rI,rS);rCc.append(rChat,rQ,rF);
+const sendR=t=>{S.rmsgs.push({u:S.cur,text:t,t:Date.now()});save();paintR(true)};
+rS.onclick=()=>{const t=rI.value.trim();if(!t)return;rI.value="";sendR(t)};
+rI.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.isComposing){e.preventDefault();rS.onclick()}});
+qbar(rQ,e=>sendR(e));
+let rSig="";
+function paintR(force){const L=S.rmsgs.slice().sort((a,b)=>a.t-b.t),sg=L.length+":"+((L.at(-1)||{}).t||0);if(!force&&sg===rSig)return;rSig=sg;rChat.replaceChildren();let ld="";
+ L.forEach(m=>{const kd=new Date(m.t).toDateString();if(kd!==ld){ld=kd;rChat.append(sepEl(m.t))}
+  const d=el("div","msg "+(m.u===S.cur?"mine":"theirs")+(EO.test(m.text||"")?" em":"")),mt=el("div","meta");
+  mt.append(el("span","",new Date(m.t).toLocaleTimeString("ar-EG",{hour:"2-digit",minute:"2-digit"})));
+  if(m.u===S.cur){const x=bt("del","trash");x.type="button";x.onclick=()=>{S.rmsgs=S.rmsgs.filter(z=>z!==m);save();paintR(true)};mt.append(x)}
+  d.append(mt,document.createTextNode(m.text||""));rChat.append(d)});
+ if(!L.length)rChat.append(emp("chat","شات الراديو فاضي","اتكلموا وانتم بتسمعوا مع بعض"));rChat.scrollTop=rChat.scrollHeight}
+rv.append(rTop,rSet,rSc,rCc);
+let rLoaded=false;
+function rRadio(){if(!rLoaded){rLoaded=true;loadSt()}loadNowLine();paintR(true)}
+setInterval(()=>{if(curV==="radio"){loadNowLine();paintR()}},2000);
+
+/* =====================================================
+   5) صوت الأذان + اختيار الشيخ + صور
+   ===================================================== */
+const ACDN="https://cdn.aladhan.com/audio/adhans/";
+const SH=[
+ {id:"alafasy",n:"مشاري راشد العفاسي",v:[["a9","أذان 1"],["a7","أذان 2"],["a4","أذان دبي"]]},
+ {id:"nafees",n:"أحمد النفيس",v:[["a1","أذان"]]},
+ {id:"zahrani",n:"منصور الزهراني",v:[["a11-mansour-al-zahrani","أذان"]]},
+ {id:"ozcan",n:"حافظ مصطفى أوزجان (تركيا)",v:[["a2","أذان"]]},
+ {id:"custom",n:"أذان من ملف عندي",v:[]}];
+const AD=Object.assign({sh:"alafasy",v:"a9",on:true},jl("ehna_adhan",{}));
+const adSave=()=>js("ehna_adhan",AD);
+const shName=id=>(SH.find(z=>z.id===id)||SH[0]).n;
+let ADA=null,ADurl="",ADpv=null;
+async function adSrc(){if(AD.sh==="custom"){try{const b=await mget("adh_custom");if(b)return URL.createObjectURL(b)}catch(e){}return ""}
+ const s=SH.find(z=>z.id===AD.sh)||SH[0];const v=s.v.find(z=>z[0]===AD.v)||s.v[0];return ACDN+v[0]+".mp3"}
+function stopAdhan(){if(ADA){try{ADA.pause()}catch(e){}ADA=null}}
+async function startAdhan(pop){if(!AD.on||ADA)return;
+ const src=await adSrc();if(!src){toast("اختار أذان من قسم صوت الأذان");return}
+ if(RA.on){try{RA.a.pause()}catch(e){}}
+ const a=new Audio(src);a.volume=1;ADA=a;
+ const pb=pop.querySelector(".pb");
+ if(pb){const x=mkb("⏹ إيقاف الأذان",()=>stopAdhan(),"ghost");pb.append(x);pop.querySelector(".pa")?.append(el("div","small muted","🔊 "+shName(AD.sh)))}
+ a.play().catch(()=>{if(pb){const g=mkb("🔊 شغّل الأذان",()=>{a.play().then(()=>g.remove()).catch(()=>toast("المتصفح منع الصوت"))},"primary");pb.prepend(g)}})}
+function adTick(){const p=$("#pr-pop");if(p&&!ADA&&!p.dataset.adh){p.dataset.adh="1";startAdhan(p)}if(!p&&ADA)stopAdhan()}
+new MutationObserver(adTick).observe(document.body,{childList:true});setInterval(adTick,1000);
+const cAdh=el("div","card");
+function paintAdh(){cAdh.replaceChildren(hd("pray","صوت الأذان"));
+ const t=el("div","i3c"),tb=mkb(AD.on?"🔊 الأذان مع التنبيه: شغّال":"🔇 الأذان مع التنبيه: مقفول",()=>{AD.on=!AD.on;adSave();paintAdh()},AD.on?"primary":"");t.append(tb);cAdh.append(el("div","small muted","اختار الشيخ اللي صوته هيشتغل مع شاشة تنبيه الصلاة. (أذان الفجر بالنص الأصلي من المصدر)"),t);
+ SH.forEach(s=>{const sel=AD.sh===s.id,r=el("div","i3r"),v=el("div","shv"+(sel?" sel":"")),av=el("div","shav",s.id==="custom"?"🎵":s.n[0]);
+  mget("adh_pic_"+s.id).then(b=>{if(b){av.textContent="";av.style.backgroundImage='url("'+URL.createObjectURL(b)+'")'}}).catch(()=>{});
+  const nm=el("div");nm.style.minWidth="0";nm.append(el("b","",s.n));
+  if(s.v.length>1){const ch=el("div","i3c");s.v.forEach(([id,l])=>{const b=el("button",sel&&AD.v===id?"on":"",l);b.type="button";b.onclick=e=>{e.stopPropagation();AD.sh=s.id;AD.v=id;adSave();paintAdh()};ch.append(b)});nm.append(ch)}
+  v.append(av,nm);v.onclick=()=>{AD.sh=s.id;if(s.v.length&&!s.v.some(z=>z[0]===AD.v))AD.v=s.v[0][0];adSave();paintAdh()};
+  const ac=el("div","row");ac.style.flexWrap="nowrap";
+  const pv=mkb("▶",async e=>{e.stopPropagation();if(ADpv){ADpv.pause();ADpv=null;return}
+   let src;if(s.id==="custom"){const b=await mget("adh_custom").catch(()=>null);if(!b)return toast("ارفع ملف أذان الأول");src=URL.createObjectURL(b)}else src=ACDN+(s.id===AD.sh?AD.v:s.v[0][0])+".mp3";
+   ADpv=new Audio(src);ADpv.onended=()=>{ADpv=null};ADpv.play().catch(()=>toast("مقدرتش أشغّله"))});
+  const ph=mkb("📷",e=>{e.stopPropagation();const f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=()=>{const fl=f.files[0];if(!fl)return;const i=new Image();i.onload=()=>{const z=240,c=document.createElement("canvas");c.width=c.height=z;const k=Math.max(z/i.width,z/i.height),w=i.width*k,h=i.height*k;c.getContext("2d").drawImage(i,(z-w)/2,(z-h)/2,w,h);c.toBlob(async b=>{try{await mput("adh_pic_"+s.id,b);paintAdh();toast("اتحفظت الصورة 📸")}catch(x){toast("مقدرتش أحفظ الصورة")}},"image/jpeg",.85)};i.onerror=()=>toast("الصورة مش مفهومة");i.src=URL.createObjectURL(fl)};f.click()},"ghost");
+  ac.append(pv,ph);
+  if(s.id==="custom"){const up=mkb("⬆",e=>{e.stopPropagation();const f=document.createElement("input");f.type="file";f.accept="audio/*";f.onchange=async()=>{const fl=f.files[0];if(!fl)return;if(fl.size>30e6)return toast("الملف كبير (الحد 30MB)");try{await mput("adh_custom",fl);AD.sh="custom";adSave();paintAdh();toast("اتحفظ الأذان 🎵")}catch(x){toast("مقدرتش أحفظ الملف")}};f.click()},"ghost");ac.append(up)}
+  r.append(v,ac);cAdh.append(r)})}
+paintAdh();
+
+/* =====================================================
+   6) صلوات تانية + هجري + أذكار
+const COORD=[[30.0444,31.2357],[30.0131,31.2089],[31.2001,29.9187],[31.2653,32.3019],[29.9668,32.5498],[30.5965,32.2715],[31.4165,31.8133],[31.0409,31.3785],[30.7865,31.0004],[30.5877,31.502],[31.0341,30.4682],[30.4659,31.1848],[30.5503,31.0107],[31.1107,30.9388],[29.0661,31.0994],[29.3084,30.8428],[28.1099,30.7503],[27.1783,31.1859],[26.5591,31.6948],[26.1551,32.716],[25.6872,32.6396],[24.0889,32.8998],[27.2579,33.8116],[27.9158,34.33],[31.3543,27.2373],[31.1316,33.7984],[25.439,30.5586]];
+function loc3(){const c=jl("ehna_pray_cfg",{c:0});if(c.c==="gps"&&c.gps)return c.gps;const p=COORD[+c.c||0]||COORD[0];return{lat:p[0],lng:p[1]}}
+const DAYS={};
+async function getDay(off){const d=new Date();d.setDate(d.getDate()+off);const w=loc3(),key=dstr(d)+"|"+w.lat.toFixed(2)+","+w.lng.toFixed(2);
+ if(DAYS[key])return DAYS[key];const c=jl("ehna_pd_"+key,null);if(c)return DAYS[key]=c;
+ const dd=p2(d.getDate())+"-"+p2(d.getMonth()+1)+"-"+d.getFullYear(),eg=w.lat>21&&w.lat<32.5&&w.lng>24&&w.lng<37;
+ const r=await fetch("https://api.aladhan.com/v1/timings/"+dd+"?latitude="+w.lat+"&longitude="+w.lng+(eg?"&method=5":""));
+ const j=(await r.json()).data,t=j.timings,h=j.date.hijri;
+ const out={d:dstr(d),t:{Fajr:String(t.Fajr).slice(0,5),Sunrise:String(t.Sunrise).slice(0,5),Dhuhr:String(t.Dhuhr).slice(0,5),Asr:String(t.Asr).slice(0,5),Maghrib:String(t.Maghrib).slice(0,5),Isha:String(t.Isha).slice(0,5)},h:{d:h.day,m:h.month.number,mn:h.month.ar,y:h.year}};
+ js("ehna_pd_"+key,out);return DAYS[key]=out}
+const atD=(off,hhmm)=>{const[a,b]=hhmm.split(":").map(Number),d=new Date();d.setDate(d.getDate()+off);d.setHours(a,b,0,0);return d.getTime()};
+let XD=null;
+async function loadX(){try{XD=[await getDay(-1),await getDay(0),await getDay(1)]}catch(e){XD=null}paintXp()}
+function hijriNow(){if(!XD)return null;const n=Date.now();return n>=atD(0,XD[1].t.Maghrib)?XD[2].h:XD[1].h}
+const XCFG=Object.assign({jumua:true,taraweeh:true,qiyam:true,duha:false,adkM:true,adkE:true},jl("ehna_xp_cfg",{}));
+const xSave=()=>js("ehna_xp_cfg",XCFG);
+const XDEF=[
+ {k:"jumua",ic:"🕌",t:"صلاة الجمعة",c:"jumua"},
+ {k:"taraweeh",ic:"🌙",t:"صلاة التراويح",c:"taraweeh"},
+ {k:"qiyam",ic:"🌌",t:"قيام الليل (الثلث الأخير)",c:"qiyam"},
+ {k:"duha",ic:"☀️",t:"صلاة الضحى",c:"duha"},
+ {k:"adkM",ic:"🌅",t:"أذكار الصباح",c:"adkM"},
+ {k:"adkE",ic:"🌇",t:"أذكار المساء",c:"adkE"}];
+function events(){if(!XD)return[];const E=[],T=XD[1].t,hj=hijriNow(),fri=new Date().getDay()===5;
+ if(fri){E.push({k:"jumua",id:"jumua-pre",ic:"🕌",t:"قرّب ميعاد الجمعة",at:atD(0,T.Dhuhr)-45*6e4,w:40,d:"اغتسل وتطيّب والبس أحسن هدومك وبكّر للمسجد. من السنن: قراءة سورة الكهف والإكثار من الصلاة على النبي ﷺ.",kahf:1});
+  E.push({k:"jumua",id:"jumua",ic:"🕌",t:"حان موعد صلاة الجمعة",at:atD(0,T.Dhuhr),w:45,d:"الجمعة عيد المسلمين الأسبوعي — توكّل على الله وروح الجامع.",pr:1})}
+ if(hj&&hj.m===9){E.push({k:"taraweeh",id:"taraweeh",ic:"🌙",t:"حان وقت صلاة التراويح",at:atD(0,T.Isha)+25*6e4,w:120,d:"في ليالي رمضان بعد العشاء — صلّيت التراويح؟",pr:1})}
+ for(const n of[-1,0]){const D=XD[n+1],N=XD[n+2];if(!D||!N)continue;const a=atD(n,D.t.Maghrib),b=atD(n+1,N.t.Fajr);const t3=a+(b-a)*2/3;
+  E.push({k:"qiyam",id:"qiyam"+n,ic:"🌌",t:"حان وقت قيام الليل",at:t3,w:45,d:"الثلث الأخير من الليل وقت فاضل للدعاء والاستغفار وصلاة القيام والوتر.",pr:1})}
+ E.push({k:"duha",id:"duha",ic:"☀️",t:"حان وقت صلاة الضحى",at:atD(0,T.Sunrise)+25*6e4,w:120,d:"ركعتين أو أكتر بعد ارتفاع الشمس.",pr:1});
+ E.push({k:"adkM",id:"adkM",ic:"🌅",t:"أذكار الصباح",at:atD(0,T.Fajr)+25*6e4,w:90,d:"ابدأ يومك بذكر الله.",ad:"m"});
+ E.push({k:"adkE",id:"adkE",ic:"🌇",t:"أذكار المساء",at:atD(0,T.Asr)+25*6e4,w:90,d:"اختم يومك بذكر الله.",ad:"e"});
+ return E}
+const xpRec=(u,k,d=dstr())=>S.xpray.find(z=>z.u===u&&z.d===d&&z.k===k);
+function xpMark(k){const d=dstr();let r=xpRec(S.cur,k,d);if(!r){S.xpray.push({_id:"xp_"+S.cur+"_"+d+"_"+k,u:S.cur,d,k,t:Date.now()})}else S.xpray=S.xpray.filter(z=>z!==r);save();paintXp()}
+function xPop(ev){if($("#ex-pop"))return;navigator.vibrate&&navigator.vibrate([250,120,250]);chime();
+ const d=el("div"),c=el("div","pc"),b=el("div","pb");d.id="ex-pop";const close=()=>d.remove(),k="ehna_xp_shown",mark=()=>{const sh=jl(k,{}),t=dstr();Object.keys(sh).forEach(x=>{if(x.indexOf(t)!==0)delete sh[x]});sh[t+"_"+ev.id]=1;js(k,sh)};
+ if(ev.pr)b.append(mkb("✅ صلّيت",()=>{mark();if(!xpRec(S.cur,ev.k))xpMark(ev.k);close();toast("تقبّل الله 🤍")},"primary"));
+ if(ev.ad)b.append(mkb("📿 افتح الأذكار",()=>{mark();close();go("pray");setTimeout(()=>cAdk.scrollIntoView({behavior:"smooth",block:"start"}),250)},"primary"));
+ if(ev.kahf)b.append(mkb("📖 افتح سورة الكهف",()=>{mark();close();go("pray");setTimeout(()=>{const s=$("#isl2-box .card select");if(s){s.value="18";s.dispatchEvent(new Event("change"));s.scrollIntoView({behavior:"smooth",block:"center"})}},300)},"primary"));
+ b.append(mkb("⏰ فكّرني بعد 10 دقايق",()=>{XSN[ev.id]=Date.now()+10*6e4;close()}),mkb("إغلاق",()=>{mark();close()},"ghost"));
+ c.append(el("div","pm",ev.ic),el("div","pt",ev.t),el("div","pa",ev.d),b);d.append(c);document.body.append(d)}
+const XSN={};
+function xCheck(){if(!S.cur||!appOn3()||!XD||$("#pr-pop")||$("#ex-pop"))return;const n=Date.now(),sh=jl("ehna_xp_shown",{}),t=dstr();
+ for(const ev of events()){if(!XCFG[ev.k])continue;if(ev.k==="jumua"&&!XCFG.jumua)continue;const key=t+"_"+ev.id;
+  if(ev.k==="adkM"&&!XCFG.adkM||ev.k==="adkE"&&!XCFG.adkE)continue;
+  if(n>=ev.at&&n<ev.at+ev.w*6e4&&!sh[key]&&!(XSN[ev.id]&&n<XSN[ev.id])){xPop(ev);return}}}
+setInterval(xCheck,20000);setInterval(()=>{if(!XD||dstr()!==XD[1].d)loadX()},60000);
+const cXp=el("div","card");
+function paintXp(){cXp.replaceChildren(hd("pray","صلوات وأوقات تانية"));
+ const hj=hijriNow();if(hj)cXp.append(el("div","small","📅 التاريخ الهجري: "+ar(hj.d)+" "+hj.mn+" "+ar(hj.y)+" هـ"+(hj.m===9?" · شهر رمضان 🌙":"")));
+ else cXp.append(el("div","small muted","بيحمّل التاريخ الهجري..."));
+ const ch=el("div","i3c");XDEF.forEach(x=>{const b=el("button",XCFG[x.c]?"on":"",x.ic+" "+x.t);b.type="button";b.onclick=()=>{XCFG[x.c]=!XCFG[x.c];xSave();paintXp()};ch.append(b)});
+ cXp.append(el("div","small muted","اختار التنبيهات اللي عايزها (بتظهر في ميعادها):"),ch);
+ if(XD){const E=events().filter(e=>XCFG[e.k]&&e.at+e.w*6e4>Date.now()).sort((a,b)=>a.at-b.at);
+  if(!E.length)cXp.append(el("div","small muted","مفيش حاجة تانية النهاردة (الجمعة والتراويح بيظهروا في يومهم)"));
+  E.forEach(e=>{const r=el("div","i3r"),dd=el("div");dd.append(el("b","",e.ic+" "+e.t.replace("حان موعد ","").replace("حان وقت ","")),el("div","small muted",new Date(e.at).toLocaleTimeString("ar-EG",{hour:"numeric",minute:"2-digit"})));r.append(dd);
+   if(e.pr){const w=el("div","row");w.style.flexWrap="nowrap";["a","y"].forEach(u=>{if(xpRec(u,e.k))w.append(avEl(u,24))});const b=bt(xpRec(S.cur,e.k)?"primary":"ghost",xpRec(S.cur,e.k)?"check":"plus");b.type="button";b.onclick=()=>xpMark(e.k);w.append(b);r.append(w)}
+   cXp.append(r)})}
+ if(new Date().getDay()===5){const f=el("div","isl-nx","🕌 النهاردة الجمعة — من السنن: الاغتسال والتطيّب والتبكير وقراءة سورة الكهف والإكثار من الصلاة على النبي ﷺ");f.style.marginTop="10px";cXp.append(f,mkb("📖 افتح سورة الكهف",()=>{const s=$("#isl2-box .card select");if(s){s.value="18";s.dispatchEvent(new Event("change"));s.scrollIntoView({behavior:"smooth",block:"center"})}else toast("افتح قسم القرآن تحت")},"primary"))}}
+paintXp();loadX();
+
+/* --- الأذكار --- */
+const cAdk=el("div","card");
+const AK2={kind:jl("ehna_adk_kind","")||(new Date().getHours()<14?"m":"e"),items:null,err:"",left:{}};
+const ADKU=["https://www.hisnmuslim.com/api/ar/27.json","https://cdn.jsdelivr.net/gh/rn0x/hisn_almuslim_json@main/hisn_almuslim.json"];
+function parseAdk(j){let items=[];
+ if(Array.isArray(j)){const ch=j.find(c=>JSON.stringify(c.category||c.title||c.name||"").includes("الصباح"));const a=ch&&(ch.array||ch.items||ch.adhkar||[]);
+  (a||[]).forEach(x=>{let t=x.text||x.ARABIC_TEXT||"";if(Array.isArray(t))t=t.join("\n");if(t)items.push({t:String(t).trim(),r:+(x.count||x.repeat||x.REPEAT||1)||1})})}
+ else if(j&&typeof j==="object"){const arr=Object.values(j).find(v=>Array.isArray(v));(arr||[]).forEach(x=>{const t=x.ARABIC_TEXT||x.text||x.arabic||"";if(t)items.push({t:String(t).trim(),r:+(x.REPEAT||x.repeat||x.count||1)||1})})}
+ return items}
+async function loadAdk(){if(AK2.items||AK2.busy)return;AK2.busy=1;paintAdk();
+ for(const u of ADKU){try{const items=await cached("adk:"+u,async()=>{const r=await fetch(u);if(!r.ok)throw 0;const it=parseAdk(await r.json());if(!it.length)throw 0;return it});if(items&&items.length){AK2.items=items;break}}catch(e){}}
+ AK2.busy=0;if(!AK2.items)AK2.err="مقدرتش أحمّل الأذكار — اتأكد من النت";paintAdk()}
+const adkDone=(u,k)=>S.adk.some(z=>z.u===u&&z.d===dstr()&&z.k===k);
+function adkLeft(){const key=dstr()+AK2.kind;let st=jl("ehna_adk_st",{});if(st.k!==key)st={k:key,l:{}};return st}
+function paintAdk(){cAdk.replaceChildren(hd("star","أذكار الصباح والمساء"));
+ const ch=el("div","i3c");[["m","🌅 أذكار الصباح"],["e","🌇 أذكار المساء"]].forEach(([k,l])=>{const b=el("button",AK2.kind===k?"on":"",l);b.type="button";b.onclick=()=>{AK2.kind=k;js("ehna_adk_kind",k);paintAdk()};ch.append(b)});
+ cAdk.append(ch);
+ const who=el("div","small muted","");who.textContent=["a","y"].map(u=>U(u).name+": "+(adkDone(u,AK2.kind)?"✅ خلّصت":"—")).join("  ·  ");cAdk.append(who);
+ if(!AK2.items){cAdk.append(el("div","small muted",AK2.err||"بيحمّل الأذكار من حصن المسلم..."));
+  if(AK2.err){const r=el("div","row");r.style.marginTop="8px";r.append(mkb("🔄 جرّب تاني",()=>{AK2.err="";AK2.busy=0;loadAdk()}),mkb("🔗 افتحها في sunnah.com",()=>window.open("https://sunnah.com/hisn:75","_blank","noopener"),"ghost"));cAdk.append(r)}return}
+ const st=adkLeft();let rem=0;
+ AK2.items.forEach((it,i)=>{const left=st.l[i]===undefined?it.r:st.l[i];rem+=left>0?1:0;
+  const d=el("div","adk"+(left<=0?" dn":""));d.append(el("div","tx",it.t),el("span","rp",left>0?"باقي "+ar(left)+(it.r>1?" من "+ar(it.r):""):"✅ تم"));
+  d.onclick=()=>{if(left<=0)return;const s=adkLeft();s.l[i]=left-1;js("ehna_adk_st",s);navigator.vibrate&&navigator.vibrate(10);
+   if(!AK2.items.some((z,j)=>(s.l[j]===undefined?z.r:s.l[j])>0)&&!adkDone(S.cur,AK2.kind)){S.adk.push({_id:"adk_"+S.cur+"_"+dstr()+"_"+AK2.kind,u:S.cur,d:dstr(),k:AK2.kind,t:Date.now()});save();toast("تقبّل الله 🤍 خلّصت الأذكار")}
+   paintAdk()};cAdk.append(d)});
+ const f=el("div","small muted","النصوص من كتاب حصن المسلم (عبر hisnmuslim.com). دوس على الذكر عشان تعدّه. اقرأ اللي يناسب وقتك (صباح/مساء) زي ما مكتوب في النص.");f.style.marginTop="8px";cAdk.append(f);
+ const rs=mkb("🔄 ابدأ من الأول",()=>{js("ehna_adk_st",{k:dstr()+AK2.kind,l:{}});paintAdk()},"ghost");rs.style.marginTop="8px";cAdk.append(rs)}
+paintAdk();
+setInterval(()=>{if(curV==="pray"&&!AK2.items&&!AK2.busy&&!AK2.err)loadAdk()},1500);
+
+/* =====================================================
+   7) ثيمات مناسبات: شم النسيم + 6 أكتوبر + عيد ميلاد
+   ===================================================== */
+const LSF="ehna_fest",LSR="ehna_ram",F2=["nasim","oct6","bday"];
+const tri=(x,y,c)=>"<path d='M"+(x-9)+" "+y+"h18l-9 22z' fill='"+c+"'/>";
+const bunt=cs=>svgUri("<svg xmlns='http://www.w3.org/2000/svg' width='120' height='44' viewBox='0 0 120 44'><path d='M0 2Q60 20 120 2' fill='none' stroke='#7a4b1c' stroke-width='1.6'/>"+tri(15,5.9,cs[0])+tri(45,10.4,cs[1])+tri(75,10.4,cs[2])+tri(105,5.9,cs[3])+"</svg>");
+const F2D={
+ nasim:{n:"شم النسيم",ic:"🌱",tk:"كل سنة وانتم طيبين — شم النسيم، عيد الربيع والبهجة 🌼🥚",bunt:bunt(["#ff9ec4","#f6d94c","#7bdc65","#4cc9f0"]),g:"كل سنة وانت طيب 🌱🥚 شم النسيم سعيد!",
+  l:[["eggs","تلوين البيض","نلوّن البيض ونرسم عليه ونكتب أمنية"],["fesikh","الفسيخ والرنجة","أكلة اليوم التقليدية (بحذر للي عنده ضغط)"],["green","البصل الأخضر والخس والملانة","مع الحمص الأخضر (الملانة) والترمس"],["garden","الخروج للحدايق وكورنيش النيل","نزهة من الصبح في الطبيعة"],["boat","مركب في النيل","رحلة نيلية أو قعدة على الكورنيش"],["basket","سلة الأكل (بكنيك)","نفرش على الحشيش ونقعد مع بعض"],["wish","أمنية على بيضة","عادة مصرية قديمة: نكتب أمنيتنا ونحتفظ بيها"]]},
+ oct6:{n:"6 أكتوبر",ic:"🇪🇬",tk:"تحيا مصر 🇪🇬 — كل سنة وانتم طيبين بذكرى نصر أكتوبر المجيد ⭐",bunt:bunt(["#ce1126","#ffffff","#111111","#f2c14e"]),g:"كل سنة ومصر طيبة 🇪🇬 بذكرى نصر أكتوبر المجيد، تحيا مصر!",
+  l:[["flag","رفع علم مصر","نزيّن بالأعلام ونرفع العلم"],["songs","أغاني أكتوبر الوطنية","نسمع الأغاني الوطنية"],["film","فيلم من أفلام أكتوبر","فيلم عن حرب أكتوبر على التلفزيون"],["museum","زيارة بانوراما أكتوبر أو متحف عسكري","المتاحف العسكرية بتفتح مجانًا في الأيام دي"],["story","حكاية بطل من العيلة","نسمع قصص العبور من الكبار"],["dua","الدعاء للشهداء","رحم الله شهداءنا الأبرار"]]},
+ bday:{n:"عيد ميلاد",ic:"🎂",tk:"🎂 كل سنة وانت طيب ويا رب تفضل منوّر حياتنا 🎉🎈",bunt:bunt(["#ff6b9d","#ffd166","#4cc9f0","#c77dff"]),g:"كل سنة وانت طيب يا قلبي 🎂🎉 يا رب كل سنة وانت أحلى وأسعد!",
+  l:[["cake","الكيكة والشموع","نجيب كيكة ونولّع الشمع"],["wish","نطلب أمنية وننفخ الشمع","أمنية في سرّك وبعدين نطفي الشمع"],["song","أغنية سنة حلوة يا جميل","نغنيها كلنا"],["gift","هدية","هدية صغيرة من القلب"],["balloons","بالونات وزينة","نزيّن المكان بالبالونات"],["photo","صورة تذكارية","نصوّر لحظات اليوم"],["out","خروجة أو عشا","نحتفل برّه أو في البيت"],["surprise","مفاجأة","مفاجأة حلوة تفرّحه"]]}};
+const F2COL=["#ff4d6d","#ffd166","#4cc9f0","#7bdc65","#c77dff","#ff9f1c","#06d6a0","#ef476f"];
+const NILE=svgUri("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 130'><path d='M0 98Q50 88 100 98T200 98T300 98T400 98V130H0z' fill='#5ab4e0'/><path d='M0 112Q50 104 100 112T200 112T300 112T400 112V130H0z' fill='#3b9bd0'/><path d='M150 96h66l-10 12h-46z' fill='#8a5a2b'/><path d='M184 96V50l28 40z' fill='#fff'/><path d='M184 96V58l-22 32z' fill='#ffe9a8'/><path d='M183 96V46h2V96z' fill='#6b4420'/><path d='M0 124Q100 112 200 124T400 124V130H0z' fill='#6ec04b'/><g stroke='#2f6b2a' stroke-width='3' fill='none' stroke-linecap='round'><path d='M30 130C32 104 30 90 26 74'/><path d='M26 74C14 66 4 70 0 78'/><path d='M26 74C30 60 40 56 52 58'/><path d='M26 74C40 68 50 72 56 82'/><path d='M370 130C372 106 370 92 366 76'/><path d='M366 76C354 68 344 72 340 80'/><path d='M366 76C370 62 380 58 392 60'/></g></svg>");
+const PYR=svgUri("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 130'><g fill='#06070c'><path d='M0 130L70 52L140 130z'/><path d='M90 130L180 30L270 130z'/><path d='M230 130L300 70L370 130z'/></g><g stroke='#06070c' stroke-width='3' fill='none' stroke-linecap='round'><path d='M370 130C372 106 370 92 366 76'/><path d='M366 76C354 68 344 72 340 80'/><path d='M366 76C370 62 380 58 392 60'/><path d='M366 76C376 70 386 74 392 84'/></g><rect x='0' y='124' width='400' height='6' fill='#ce1126'/><rect x='0' y='128' width='400' height='2' fill='#fff'/></svg>");
+function clear2(){root.removeAttribute("data-fest2");["f2-deco","f2-top"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()})}
+function clearAllFest(){clear2();root.removeAttribute("data-fest");root.removeAttribute("data-ram");["ram-deco","ram-top","fest-deco","fest-top"].forEach(i=>{const e=document.getElementById(i);if(e)e.remove()})}
+function build2(f){clear2();root.setAttribute("data-fest2",f);const D=F2D[f];root.style.setProperty("--f2-strip",'url("'+D.bunt+'")');
+ const d=el("div");d.id="f2-deco";let h="<div class='sk'></div>";
+ if(f==="nasim"){h+="<div class='sun'></div><div class='cl' style='top:60px;animation-duration:70s'>☁️</div><div class='cl' style='top:130px;animation-duration:95s;animation-delay:-40s;font-size:34px'>☁️</div><div class='by' style='top:30%'>🦋</div><div class='by' style='top:55%;animation-delay:-8s;font-size:20px'>🦋</div>";
+  for(let i=0;i<6;i++)h+="<i class='egg' style='left:"+(8+i*16)+"%;--c:"+F2COL[i%8]+";animation-delay:-"+i*.5+"s'></i>"}
+ else if(f==="oct6"){h+="<div class='fl' style='inset-inline-start:6%'></div><div class='fl' style='inset-inline-end:6%;animation-delay:-1.2s'></div>";
+  [[22,28,0],[70,22,1.2],[46,40,2.4]].forEach(([l,t,dl])=>{h+="<i class='fwk' style='left:"+l+"%;top:"+t+"%;animation-delay:"+dl+"s'></i>"})}
+ else{for(let i=0;i<26;i++)h+="<i class='cf' style='left:"+rnd(0,98)+"%;--c:"+F2COL[i%8]+";animation-duration:"+rnd(5,10)+"s;animation-delay:-"+rnd(0,9)+"s'></i>";
+  for(let i=0;i<8;i++)h+="<i class='bl' style='left:"+(5+i*12)+"%;--c:"+F2COL[i]+";animation-duration:"+(14+i*2)+"s;animation-delay:-"+i*3+"s'></i>";
+  h+="<div class='gf' style='left:10%'>🎁</div><div class='gf' style='left:46%;font-size:46px;animation-delay:-.6s'>🎂</div><div class='gf' style='right:10%;animation-delay:-1.1s'>🎈</div>"}
+ d.innerHTML=h;const sk=d.querySelector(".sk");if(f==="nasim"){sk.style.backgroundImage='url("'+NILE+'")';sk.style.backgroundSize="400px 130px"}else if(f==="oct6"){sk.style.backgroundImage='url("'+PYR+'")';sk.style.backgroundSize="400px 130px"}else sk.style.display="none";
+ document.body.prepend(d);
+ const t=el("div");t.id="f2-top";t.innerHTML="<div class='tk'><span>"+(D.tk+" &nbsp;•&nbsp; ").repeat(3)+"</span></div><div class='fb'></div><div class='fb fb2'></div>";document.body.append(t)}
+function setF2(f){clearAllFest();js(LSR,0);js(LSF,f||"");if(f)build2(f);paintF2()}
+function sync2(){const cur=jl(LSF,"");if(F2.includes(cur)){if(root.getAttribute("data-fest2")!==cur)build2(cur)}else if(root.hasAttribute("data-fest2"))clear2()}
+setInterval(sync2,700);sync2();
+/* كارت الإعدادات */
+function mkF2Card(){const c=el("div","card");c.id="f2-card";c.append(hd("star","مناسبات تانية"));
+ const cur=jl(LSF,""),g=el("div","f2btns");
+ F2.forEach(k=>{const D=F2D[k],b=el("button",cur===k?"primary":"");b.type="button";b.innerHTML="<span>"+D.ic+"</span>"+D.n;b.onclick=()=>{setF2(cur===k?"":k);c.replaceWith(mkF2Card());if(cur!==k)toast("كل سنة وانتم طيبين "+D.ic)};g.append(b)});
+ c.append(el("div","small muted","شم النسيم، 6 أكتوبر، وعيد ميلاد. كل واحدة بتغيّر الموقع كله وبتفتح قايمة تقاليدها في الوضع الإسلامي."),g);
+ if(F2.includes(cur)){const o=mkb("إيقاف الثيم",()=>{setF2("");c.replaceWith(mkF2Card())},"ghost");o.style.cssText="width:100%;margin-top:8px";c.append(o)}
+ return c}
+function ensureF2(){const v=$("#v-set");if(!v||v.querySelector("#f2-card"))return;const rc=v.querySelector("#ram-card");const n=mkF2Card();if(rc)rc.after(n);else v.insertBefore(n,v.firstChild)}
+{const v=$("#v-set");if(v)new MutationObserver(ensureF2).observe(v,{childList:true})}
+setInterval(ensureF2,900);ensureF2();
+/* قايمة التقاليد (متزامنة) */
+const YR=new Date().getFullYear(),cF2=el("div","card");
+function paintF2(){cF2.replaceChildren();const cur=jl(LSF,"");if(!F2.includes(cur)){cF2.style.display="none";return}cF2.style.display="";
+ const D=F2D[cur];cF2.append(hd("heart","قايمة "+D.n+" "+D.ic));
+ const gb=mkb("🎉 ابعت تهنئة في الشات",()=>sendChat(D.g),"primary");gb.style.margin="8px 0";cF2.append(gb);let dn=0;
+ D.l.forEach(([k,t,nt])=>{const id=u=>"eid_"+YR+"_"+cur+"_"+k+"_"+u,done=u=>S.eid.some(z=>z._id===id(u));if(done(S.cur))dn++;
+  const r=el("div","f2t"),d=el("div"),w=el("div","row");w.style.flexWrap="nowrap";d.append(el("b","",t),el("div","small muted",nt));
+  ["a","y"].forEach(u=>{if(done(u))w.append(avEl(u,24))});
+  const b=bt(done(S.cur)?"primary":"ghost",done(S.cur)?"check":"plus");b.type="button";
+  b.onclick=()=>{const i=id(S.cur);if(done(S.cur))S.eid=S.eid.filter(z=>z._id!==i);else S.eid.push({_id:i,y:YR,f:cur,k,u:S.cur,t:Date.now()});save();paintF2()};
+  w.append(b);r.append(d,w);cF2.append(r)});
+ cF2.append(el("div","small muted","انت عملت "+dn+" من "+D.l.length+" ✨"))}
+paintF2();
+setInterval(()=>{if(curV==="pray"&&!$(".lb"))paintF2()},3000);
+/* عيد ميلاد النهارده؟ */
+function bdCheck(){if(!S.cur||!appOn3()||$("#bd-pop"))return;const n=new Date(),md=p2(n.getMonth()+1)+"-"+p2(n.getDate()),sh=jl("ehna_bd_shown",{});
+ for(const u of["a","y"]){const bd=U(u).bd;if(!bd||bd.slice(5)!==md)continue;const key=dstr()+u;if(sh[key])continue;
+  sh[key]=1;Object.keys(sh).forEach(k=>{if(k.indexOf(dstr())!==0)delete sh[k]});js("ehna_bd_shown",sh);
+  const d=el("div"),c=el("div","pc"),b=el("div","pb");d.id="bd-pop";d.style.cssText="position:fixed;inset:0;z-index:86;display:grid;place-items:center;background:#000b;backdrop-filter:blur(14px)";
+  c.style.cssText="width:min(360px,92vw);text-align:center;padding:26px 18px;border-radius:30px;background:linear-gradient(160deg,var(--bg2),var(--g2));border:1px solid var(--stroke);color:var(--text)";b.style.cssText="display:flex;flex-direction:column;gap:8px;margin-top:12px";
+  b.append(mkb("🎂 فعّل ثيم عيد الميلاد",()=>{setF2("bday");d.remove()},"primary"));
+  if(u!==S.cur)b.append(mkb("🎉 ابعت تهنئة",()=>{sendChat("كل سنة وانت طيب يا "+U(u).name+" 🎂🎉 يا رب كل سنة وانت أحلى وأسعد!");d.remove()}));
+  b.append(mkb("إغلاق",()=>d.remove(),"ghost"));
+  const m=el("div","","🎂");m.style.fontSize="64px";const t=el("div","",u===S.cur?"النهاردة عيد ميلادك يا "+U(u).name+"! 🎉":"النهاردة عيد ميلاد "+U(u).name+"! 🎉");t.style.cssText="font-size:24px;font-weight:800;margin:8px 0";
+  c.append(m,t,b);d.append(c);document.body.append(d);chime();return}}
+setInterval(bdCheck,5000);
+
+/* =====================================================
+   تركيب الكروت في صفحة الوضع الإسلامي
+   ===================================================== */
+function mount(){const v=$("#v-pray");if(!v)return;let h=$("#isl2-box");
+ if(!h){h=$("#isl3-own");if(!h){h=el("div");h.id="isl3-own";const b1=$("#isl-box");if(b1&&v.contains(b1))v.insertBefore(h,b1.nextSibling);else v.prepend(h)}else if(!v.contains(h))v.prepend(h)}
+ [cF2,cXp,cAdk,cAdh].slice().reverse().forEach(c=>{if(!h.contains(c))h.insertBefore(c,h.firstChild)})}
+mount();setInterval(mount,900);
+{const o=$("#v-pray");if(o)new MutationObserver(mount).observe(o,{childList:true})}
+
+/* ربط التنقل */
+{const _g=go;go=function(v){_g(v);if(v==="radio")rRadio();if(v==="pray"){mount();paintXp();paintAdh();paintF2();loadAdk()}}}
+})();
+</script> 
 </body>
 </html>
