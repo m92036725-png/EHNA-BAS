@@ -2512,5 +2512,27 @@ function ensureRam(){const v=$("#v-set");if(!v||v.querySelector("#ram-card"))ret
 setInterval(ensureRam,900);ensureRam();
 })();
 </script>
+  <script>
+(()=>{
+if(window.__dupFix)return;window.__dupFix=1;
+const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)];
+function dd(){
+ /* 1) شيل التكرار من قايمة التبويبات اللي بتتبني منها قايمة "المزيد" */
+ if(typeof SEC!=="undefined")for(let i=SEC.length-1;i>=0;i--)if(SEC.indexOf(SEC[i])!==i)SEC.splice(i,1);
+ /* 2) شيل أزرار الشريط المكررة */
+ const seen=new Set();
+ qa("#nav button[data-v]").forEach(b=>{const v=b.dataset.v;if(seen.has(v))b.remove();else seen.add(v)});
+ qa("#nav .more").slice(1).forEach(b=>b.remove());
+ /* 3) شيل الصفحات المكررة (سيب الأولى) */
+ const ids=new Set();
+ qa("main > section.view").forEach(s=>{if(ids.has(s.id))s.remove();else ids.add(s.id)});
+ /* 4) لو قايمة المزيد مفتوحة وفيها تكرار، نضّفها */
+ qa(".mg").forEach(g=>{const t=new Set();[...g.children].forEach(b=>{const x=b.textContent.trim();if(t.has(x))b.remove();else t.add(x)})});
+}
+dd();
+setInterval(dd,300);
+new MutationObserver(dd).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
