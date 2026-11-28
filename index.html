@@ -3395,5 +3395,135 @@ mount();setInterval(mount,900);
 {const _g=go;go=function(v){_g(v);if(v==="radio")rRadio();if(v==="pray"){mount();paintXp();paintAdh();paintF2();loadAdk()}}}
 })();
 </script> 
+  
+<!-- EHNA BAS PERFORMANCE BOOSTER -->
+<style>
+/* تحسينات عامة */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  image-rendering: auto;
+}
+
+/* تحسين كروت الموقع */
+.card,
+.msg,
+#messages,
+#wmsgs,
+.view {
+  min-width: 0;
+}
+
+/* تخفيف استهلاك كارت الشات */
+.msg {
+  contain: layout paint;
+}
+
+/* وضع الأداء للأجهزة الضعيفة والموبايلات */
+.perf-lite .card,
+.perf-lite #topbar,
+.perf-lite #nav,
+.perf-lite #composer,
+.perf-lite #tray,
+.perf-lite #toast,
+.perf-lite .chip,
+.perf-lite .qbar button {
+  -webkit-backdrop-filter: blur(8px) saturate(110%) !important;
+  backdrop-filter: blur(8px) saturate(110%) !important;
+}
+
+/* تقليل تأثير الخلفيات الضبابية */
+.perf-lite .blobs i {
+  filter: blur(30px) !important;
+  opacity: .28 !important;
+}
+
+/* تقليل الظلال الثقيلة */
+.perf-lite .card {
+  box-shadow: 0 5px 15px -10px #0009 !important;
+}
+
+/* تقليل الحركات غير الضرورية */
+.perf-lite .view:not(.hidden) {
+  animation-duration: .12s !important;
+}
+
+.perf-lite .who img,
+.perf-lite .fl:not(.off),
+.perf-lite .sp {
+  animation-duration: 3s !important;
+}
+
+/* تحسين الصور داخل المحادثات */
+#messages img,
+#wmsgs img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* تحسين عرض الفيديو */
+#stage iframe {
+  contain: strict;
+}
+
+/* منع انتقالات ثقيلة على الأجهزة الضعيفة */
+.perf-lite button {
+  transition-duration: .12s !important;
+}
+</style>
+
+<script>
+(function () {
+  const weakDevice =
+    (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    (navigator.hardwareConcurrency &&
+     navigator.hardwareConcurrency <= 4);
+
+  const mobile = window.matchMedia(
+    "(max-width: 700px)"
+  ).matches;
+
+  if (weakDevice || mobile) {
+    document.documentElement.classList.add("perf-lite");
+  }
+
+  // تحسين تحميل صور المحادثات
+  function optimizeChatImages(root) {
+    if (!root) return;
+
+    root.querySelectorAll("img").forEach(img => {
+      img.loading = "lazy";
+      img.decoding = "async";
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const chats = [
+      document.getElementById("messages"),
+      document.getElementById("wmsgs")
+    ].filter(Boolean);
+
+    chats.forEach(chat => {
+      optimizeChatImages(chat);
+
+      const observer = new MutationObserver(() => {
+        optimizeChatImages(chat);
+      });
+
+      observer.observe(chat, {
+        childList: true,
+        subtree: true
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
